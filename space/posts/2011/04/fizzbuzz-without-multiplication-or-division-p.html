@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset='utf-8'>
+<link href='../../../exports.css' rel='stylesheet'>
+<link href='../../../exports.css' rel='stylesheet'>
+
+</head>
+<body>
+<div id='wrap'>
+<div id='header'>
+<h1>Lost In Permutation</h1>
+<h2>This is an archived post
+This is an archived post
+</h2>
+</div>
+<div id='content'><div id='nav'>
+<a href="../../../posts/2011/05/fizzbuzz-without-multiplication-or-division-p-0.html">Previous</a>
+&nbsp; 
+<a href="../../../index.html">Index</a>
+&nbsp; 
+<a href="../../../posts/2011/04/fizzbuzz-without-multiplication-or-division.html">Next</a>
+</div>
+<div class='post'>
+<div class='post_header'>
+<h3>FizzBuzz without multiplication or division, part 2</h3>
+<div class='post_info'>
+<span class='post_time'>April 18 2011,  8:50 PM</span>
+<span class='author'>&nbsp;by krallja</span>
+</div>
+</div>
+<div class='post_body'><p><span style="font-size: 12px;">
+<p><em>This is the second of a three-part series:&nbsp;<a href="http://jacob.jkrall.net/fizzbuzz-without-multiplication-or-division">Part 1</a>, <a href="http://jacob.jkrall.net/fizzbuzz-without-multiplication-or-division-p-0">Part 3</a>.</em></p>
+</span></p>
+<p><a href="http://jacob.jkrall.net/fizzbuzz-without-multiplication-or-division">Last time</a> on Lost In Permutation, I wrote a <a href="http://www.codinghorror.com/blog/2007/02/fizzbuzz-the-programmers-stairway-to-heaven.html" title="FizzBuzz: the Programmer's Stairway to Heaven">FizzBuzz</a> implementation that didn't use the run-time multiplication and division operators. Unfortunately, magic numbers make me squeamish, and there is too much coupling between the data in <tt>rg</tt> and the if-chain. In order to change the behavior of the function, I would have to change both places.</p>
+<p>To fix this, I can use <tt>printf()</tt> (which doesn't care if I pass an extra parameter) as the dispatcher. The more decisions I can foist onto the runtime, the less code I have written, which is great because it means I have less code to test, less code to read, and less code to maintain.</p>
+<div class="CodeRay">
+  <div class="code"><pre>void FizzBuzz(int n) {
+  char* num = &quot;%d\n&quot;;
+  char* fizz = &quot;Fizz\n&quot;;
+  char* buzz = &quot;Buzz\n&quot;;
+  char* fizzbuzz = &quot;FizzBuzz\n&quot;;
+
+  char* rg[15] = { fizzbuzz, num, num, fizz, num, buzz, fizz, num, num, fizz, buzz, num, fizz, num, num };
+  int ix = 1;
+
+  for(int i=1; i&lt;=n; i++)
+  {
+     printf(rg[ix], i);
+     
+     ix++;
+     if(ix==15) ix = 0;
+  }
+}</pre></div>
+</div>
+
+<blockquote class="posterous_short_quote">
+<p>Perfection is achieved, not when there is nothing more to add, but when there is nothing left to take away.</p>
+<p>- Antoine de Saint-Exup&eacute;ry</p>
+</blockquote>
+<p>Now there is no longer an if-chain that needs to be tested, only the prepopulated data in the ring buffer <tt>rg</tt> and the behavior of the ring buffer itself. Except for the magic constant 15, the only place to make changes to the function is in <tt>rg</tt> itself. When this series concludes, I will examine how to expand this printf-dispatch solution for any variant of the FizzBuzz problem.</p></div>
+<div class='post_responses'>
+<h4>924 views and 0 responses</h4>
+<ul class='post_responses list'>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</body>
+</html>

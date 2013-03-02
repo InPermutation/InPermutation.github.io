@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset='utf-8'>
+<link href='../../../exports.css' rel='stylesheet'>
+<link href='../../../exports.css' rel='stylesheet'>
+
+</head>
+<body>
+<div id='wrap'>
+<div id='header'>
+<h1>Lost In Permutation</h1>
+<h2>This is an archived post
+This is an archived post
+</h2>
+</div>
+<div id='content'><div id='nav'>
+<a href="../../../posts/2013/01/the-end.html">Previous</a>
+&nbsp; 
+<a href="../../../index.html">Index</a>
+&nbsp; 
+<a href="../../../posts/2012/05/134428322.html">Next</a>
+</div>
+<div class='post'>
+<div class='post_header'>
+<h3>Laziness</h3>
+<div class='post_info'>
+<span class='post_time'>December 10 2012, 10:14 PM</span>
+<span class='author'>&nbsp;by krallja</span>
+</div>
+</div>
+<div class='post_body'><p>Friday, <a href="http://dangerisgo.com/" title="Danger is Go!" target="_blank">Cam</a> and I were trying to figure out why a new AJAX call was failing for logged out users, but not for logged in users. The exception logs weren't really helpful: somewhere deep inside .NET, the database was timing out after waiting 30s. The code that called the stored procedure is only used in one place in our code, and that code was nowhere near related to the AJAX call we were doing.</p>
+<p>I resorted to inspecting the code line-by-line. I almost gave up, when something in the reptilian part of my brain made me reread the return statement:</p>
+<p><tt>return Json(new {ti, id = asset.AssetId});</tt></p>
+<p>That can't be it. We're just copying the information about the image into an anonymous object to serialize to JSON.</p>
+<p>Although, if the serializer threw an exception, the call stack would be the same as the one we observed... I guess this deserves more attention.</p>
+<p>But how would this line cause a crash?</p>
+<p><tt>asset.AssetId</tt> is a <tt>long</tt>; besides, it's an auto property, and those are safe.</p>
+<p><tt>ti</tt> is a <tt>TemplateImage</tt>. That is one of the earliest classes ever written at Cheezburger. It can't be crashing, can it?</p>
+<p>Then I realized that <tt>TemplateImage</tt> had a <tt>User</tt> property, <tt>User</tt> had a <tt>UserStats</tt>, and <tt>UserStats</tt> had a property that called the stored procedure that was timing out. Suddenly it all made sense!</p>
+<p>The JSON serializer was doing its job, making a deep copy of <tt>ti</tt> by traversing field and property members as deep as it could. Unfortunately, the <tt>UserStats</tt> properties were lazy-loaded from the database, and there were no attributes telling the serializer to skip them.</p>
+<p>I've gradually begun to dislike lazy attributes because of how easy it is to forget how much work is going on under the covers. Now I'm convinced that this laziness is evil.</p>
+<p>Why was this only affecting logged out users?</p>
+<p>If you're logged out, the <tt>User</tt> object is set to a default value. When the database was queried for statistics, it was calculating those statistics across all the images that have ever been made by any logged out user. That's an awful lot of data to chug through.</p>
+<p>What was the fix?</p>
+<p>The quick fix is to serialize the one property we needed from <tt>ti</tt>, <tt>Url</tt>:</p>
+<p><span style="font-family: monospace;">return Json(new {ti = new {ti.Url}, id = asset.AssetId});</span></p>
+<p>I didn't have to change the Javascript receiver, and as a bonus, much less data is being sent over the wire. Later, I will refactor <tt>UserStatistics</tt> to get rid of the lazy properties.</p></div>
+<div class='post_responses'>
+<h4>113 views and 0 responses</h4>
+<ul class='post_responses list'>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset='utf-8'>
+<link href='../../../exports.css' rel='stylesheet'>
+<link href='../../../exports.css' rel='stylesheet'>
+
+</head>
+<body>
+<div id='wrap'>
+<div id='header'>
+<h1>Lost In Permutation</h1>
+<h2>This is an archived post
+This is an archived post
+</h2>
+</div>
+<div id='content'><div id='nav'>
+<a href="../../../posts/2011/04/fizzbuzz-without-multiplication-or-division-p.html">Previous</a>
+&nbsp; 
+<a href="../../../index.html">Index</a>
+&nbsp; 
+<a href="../../../posts/2011/04/48600380.html">Next</a>
+</div>
+<div class='post'>
+<div class='post_header'>
+<h3>FizzBuzz without multiplication or division</h3>
+<div class='post_info'>
+<span class='post_time'>April 18 2011, 12:11 AM</span>
+<span class='author'>&nbsp;by krallja</span>
+</div>
+</div>
+<div class='post_body'><p><span style="font-size: 12px;">
+<p><em>This is the first of a three-part series: <a href="http://jacob.jkrall.net/fizzbuzz-without-multiplication-or-division-p">Part 2</a>,&nbsp;<a href="http://jacob.jkrall.net/fizzbuzz-without-multiplication-or-division-p-0">Part 3</a>.</em></p>
+<p>&nbsp;</p>
+</span></p>
+<p>I use <a href="http://rosettacode.org/wiki/FizzBuzz">FizzBuzz</a> as a warm-up question on interviews, so I have had time to ponder it quite a bit. As a thought experiment, I wondered if I could come up with an implementation that does not depend on run-time multiplication (or its inverse, division). I decided a very readable approach would be to use a circular look-up table.</p>
+<div class="CodeRay">
+  <div class="code"><pre>void FizzBuzz(int n) {
+  int rg[15] = { 15, 0, 0, 3, 0, 5, 3, 0, 0, 3, 5, 0, 3, 0, 0 };
+  int ix = 1;
+
+  for(int i=1; i&lt;=n; i++)
+  {
+     if(rg[ix] == 0) printf(&quot;%d\n&quot;, i);
+     else if(rg[ix] == 3) printf(&quot;Fizz\n&quot;);
+     else if(rg[ix] == 5) printf(&quot;Buzz\n&quot;);
+     else if(rg[ix] == 15) printf(&quot;FizzBuzz\n&quot;);
+     
+     ix++;
+     if(ix==15) ix = 0;
+  }
+}</pre></div>
+</div>
+
+<p>There is a part of my brain that clings to the idea that the ALU is always the bottleneck. Though I know this isn't true, it's still nice to experiment with constraining myself on simple problems such as FizzBuzz, especially when I can find an elegant solution underneath.</p></div>
+<div class='post_responses'>
+<h4>2803 views and 6 responses</h4>
+<ul class='post_responses list'>
+<li class='response clearfix'>
+<div class='response_header'>
+<div class='response_time'>May  1 2011, 10:44 PM</div>
+<div class='response_name'>Anon responded:</div>
+</div>
+<div class='response_body'>int ix3 =1;<br />int ix5 =1;<p>for(int i=1; i&lt;=n; i++)<br />{<br /> if ( ( ix5 == 0 ) && ( ix3 == 0 ) )<br />{<br /> printf("FizzBuzz\n");<br />}<br />else if ( ix5 == 0 )<br />{<br /> printf("Buzz\n");<br />}<br />else if ( ix3 == 0 )<br />{<br /> printf("Fizz\n");<br />}<br />else<br />{<br />printf("%d\n", i);<br />}</p><p>ix3++;<br />if ( ix3 == 3 ) ix3 = 0;<br />ix5++;<br />if ( ix5 == 5 ) ix5 = 0;<br />}</p></div>
+</li>
+<li class='response clearfix'>
+<div class='response_header'>
+<div class='response_time'>May  1 2011, 10:50 PM</div>
+<div class='response_name'>krallja responded:</div>
+</div>
+<div class='response_body'>@Anon: that's pretty great too! Check out Part 2 for a way to do it without the giant if-chain</div>
+</li>
+<li class='response clearfix'>
+<div class='response_header'>
+<div class='response_time'>May  1 2011, 11:21 PM</div>
+<div class='response_name'>Christoffer responded:</div>
+</div>
+<div class='response_body'>void FizzBuzz(int n) {<br />  static const char *fizz[3] = { "Fizz", "", "" };<br />  static const char *buzz[5] = { "Buzz", "", "", "", "" };<p>int i, fi = 1, bi = 1;</p><p>for(i = 1; i &lt;= n; i++) {<br />     if (bi && fi)<br />       printf("%d\n", i);<br />     else<br />       printf("%s%s\n", fizz[fi], buzz[bi]);<br />     <br />     if (++fi == 3) fi = 0; <br />     if (++bi == 5) bi = 0;<br />  }<br />}</p></div>
+</li>
+<li class='response clearfix'>
+<div class='response_header'>
+<div class='response_time'>May  2 2011,  4:31 AM</div>
+<div class='response_name'>Anon responded:</div>
+</div>
+<div class='response_body'>#include "stdio.h"<p>void PrintN(int i) {<br />	printf("%d\n", i);<br />}</p><p>void PrintFizz(int i) {<br />	printf("Fizz\n");<br />}</p><p>void PrintBuzz(int i) {<br />	printf("Buzz\n");<br />}</p><p>void PrintFizzBuzz(int i) {<br />	printf("FizzBuzz\n");<br />}</p><p>typedef void (*Printer)(int);</p><p>int main(int argc, char** argv) {<br />	Printer printers[] = { PrintN, PrintN, PrintFizz, PrintN, PrintBuzz,<br />						   PrintFizz, PrintN, PrintN, PrintFizz, PrintBuzz,<br />						   PrintN, PrintFizz, PrintN, PrintN, PrintFizzBuzz };</p><p>int next[] = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 0 };</p><p>int state = 0;<br />	for (int i = 1; i &lt;= 100; i++) {<br />		printers[state](i);<br />		state = next[state];<br />	}</p><p>return 0;<br />}</p></div>
+</li>
+<li class='response clearfix'>
+<div class='response_header'>
+<div class='response_time'>May  2 2011,  8:23 AM</div>
+<div class='response_name'>krallja responded:</div>
+</div>
+<div class='response_body'>@Anon: Perfect, a full finite state machine removes all the if() statements! Very pretty.</div>
+</li>
+<li class='response clearfix'>
+<div class='response_header'>
+<div class='response_time'>May  2 2011,  8:24 AM</div>
+<div class='response_name'>krallja responded:</div>
+</div>
+<div class='response_body'>@Christoffer: That's very compact; I like it. What happens when you want to add another divisor?</div>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</body>
+</html>

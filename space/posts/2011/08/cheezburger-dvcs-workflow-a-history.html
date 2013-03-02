@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset='utf-8'>
+<link href='../../../exports.css' rel='stylesheet'>
+<link href='../../../exports.css' rel='stylesheet'>
+
+</head>
+<body>
+<div id='wrap'>
+<div id='header'>
+<h1>Lost In Permutation</h1>
+<h2>This is an archived post
+This is an archived post
+</h2>
+</div>
+<div id='content'><div id='nav'>
+<a href="../../../posts/2011/10/dedicated-maker-time.html">Previous</a>
+&nbsp; 
+<a href="../../../index.html">Index</a>
+&nbsp; 
+<a href="../../../posts/2011/05/52687184.html">Next</a>
+</div>
+<div class='post'>
+<div class='post_header'>
+<h3>Cheezburger DVCS Workflow: A History</h3>
+<div class='post_info'>
+<span class='post_time'>August  9 2011,  4:46 PM</span>
+<span class='author'>&nbsp;by krallja</span>
+</div>
+</div>
+<div class='post_body'><p><em>I wrote <a href="http://eat.cheezburger.com/development-practices/cheezburger-dvcs-workflow-a-history/">an article on my company's technology blog</a>!</em></p>
+<p>&nbsp;</p>
+<p>In the beginning was the Code, and the Code was with Subversion, and the Code was Subversion. Cheezburger was with Subversion in the beginning.<a href="http://eat.cheezburger.com/development-practices/cheezburger-dvcs-workflow-a-history/attachment/0svn/" rel="attachment wp-att-256"><br /><div class='p_embed p_image_embed'>
+<img src='../../../image/2011/10/33146906-0svn.png'>
+</div>
+</a></p>
+<p>&nbsp;</p>
+<p>Subversion was good, but, as a globally distributed team, Cheezburger really needed a way for developers to work offline, without having to coordinate with each other. Somebody ran an import script, and just like that Cheezburger was on Mercurial. There was one repository, &ldquo;Current&rdquo;, on the&nbsp;<a href="http://www.fogcreek.com/kiln/">Kiln</a>&nbsp;server, and we released by tagging and shipping from that same repository.</p>
+<p>&nbsp;</p>
+<p><a href="http://eat.cheezburger.com/development-practices/cheezburger-dvcs-workflow-a-history/attachment/0svn/" rel="attachment wp-att-256"><div class='p_embed p_image_embed'>
+<img src='../../../image/2011/10/33146907-1hg.png'>
+</div>
+</a></p>
+<p>&nbsp;</p>
+<p>Eventually we realized that sometimes features take longer than a single release cycle to create, but we still want to push them to a staging server or show them to someone else. Using Kiln, branching was supremely easy, so we created branches for long-lived features and teams. The central integration repository was called Current, and we would tag and release from that repository.</p>
+<p><a href="http://eat.cheezburger.com/development-practices/cheezburger-dvcs-workflow-a-history/attachment/0svn/" rel="attachment wp-att-256"><div class='p_embed p_image_embed'>
+<img src='../../../image/2011/10/33146909-2hgclone.png'>
+</div>
+</a></p>
+<p />
+<p>A new problem arose with this system; namely, that it wasn&rsquo;t clear which changes had been tested by our automatic continuous integration system, so in May 2011, we added a new branch called &ldquo;Approved&rdquo; that the CI system would push approved changesets to, and we shipped from there after tagging Current.</p>
+<p>&nbsp;</p>
+<p><div class='p_embed p_image_embed'>
+<img src='../../../image/2011/10/33146910-3approved.png'>
+</div>
+This system worked pretty well for a while, but every once in a while, a team would want to push a gigantic merge with old changes from their branch into Current in order to release. Then, the CI system would detect a failure, or the QA team would identify a fatal flaw, or the team would get cold feet for some other reason. Unfortunately, all the other teams would do the sensible thing and merge with Current, so their branches were also infected with the unreleasable code. Changesets got backed up behind the misfired release, tempers flared, developers threatened violence on&nbsp;<a href="http://icanhascheezburger.com/">lolcats</a>. The first time this happened, promises were made that it wouldn&rsquo;t happen again.</p>
+<p>&nbsp;</p>
+<p>Then it happened again, with predictable results. Lolcats flared, developers got backed up behind the misfired release, and changesets threatened violence on tempers. A company crisis was declared, and a Serious Meeting was held. There was talk of separating the app into siloed services, which is certainly a viable solution, but would take a very significant amount of code and work. Eventually, the team decided on another change to our repository layout that would avoid this infuriating problem.</p>
+<p><div class='p_embed p_image_embed'>
+<img src='../../../image/2011/10/33146911-4newsystem.png'>
+</div>
+</p>
+<p>The rules of the system are pretty simple:</p>
+<ol>
+<li>Don&rsquo;t pull from PendingTests, pull from Released instead</li>
+<li>Don&rsquo;t push to PendingRelease or Released &mdash; let the tools automate this</li>
+</ol>
+<p>Current had two functions: it was a place to put code that was about to be released, and a place to synchronize with other teams&rsquo; code. This new workflow has an identical number of entry points, but it separates the release functionality from the team integration functionality.</p>
+<p>PendingTests and PendingRelease are both disposable: if unreleasable code makes it into either of these repositories, they can be deleted and recreated as clones of Released.</p>
+<p>This workflow also imposes a natural lock on release: if there are changes waiting in PendingTests, Mercurial won&rsquo;t let you push until you pull those changes down. But you can&rsquo;t pull any new changes until the release is complete, because of rule #1. As a nice bonus, Kiln has a page that shows you related repositories. If you visit PendingTests and check out the outgoing changes to Released, you can see who is releasing, and exactly what their release will include.</p>
+<p>Our release process has grown more complicated over time, but these complications actually allow us to develop code independently from each other without stepping on one anothers&rsquo; toes. In addition, we have been able to incrementally grow an automated testing system, which lets us move ever closer to our goal of continuous deployment. I&rsquo;m totally jealous of IMVU&rsquo;s&nbsp;<a href="http://timothyfitz.wordpress.com/2009/02/10/continuous-deployment-at-imvu-doing-the-impossible-fifty-times-a-day/">nine minute release pipeline</a>&nbsp;&mdash; ours takes over an hour: 38 minutes in continuous integration and 30-45 minutes to release. There&rsquo;s clearly more room for us to improve! Let us know what your team&rsquo;s workflow looks like in the comments.</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p></div>
+<div class='post_responses'>
+<h4>451 views and 0 responses</h4>
+<ul class='post_responses list'>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</body>
+</html>
