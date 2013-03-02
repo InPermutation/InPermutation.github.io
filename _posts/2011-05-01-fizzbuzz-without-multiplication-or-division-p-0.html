@@ -1,35 +1,9 @@
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset='utf-8'>
-<link href='../../../exports.css' rel='stylesheet'>
-<link href='../../../exports.css' rel='stylesheet'>
-
-</head>
-<body>
-<div id='wrap'>
-<div id='header'>
-<h1>Lost In Permutation</h1>
-<h2>This is an archived post
-This is an archived post
-</h2>
-</div>
-<div id='content'><div id='nav'>
-<a href="../../../posts/2011/05/52687184.html">Previous</a>
-&nbsp; 
-<a href="../../../index.html">Index</a>
-&nbsp; 
-<a href="../../../posts/2011/04/fizzbuzz-without-multiplication-or-division-p.html">Next</a>
-</div>
-<div class='post'>
-<div class='post_header'>
-<h3>FizzBuzz without multiplication or division, part 3</h3>
-<div class='post_info'>
-<span class='post_time'>May  1 2011,  7:37 PM</span>
-<span class='author'>&nbsp;by krallja</span>
-</div>
-</div>
-<div class='post_body'><p><em>This is the finale of a three-part series: <a href="http://jacob.jkrall.net/fizzbuzz-without-multiplication-or-division">Part 1</a>, <a href="http://jacob.jkrall.net/fizzbuzz-without-multiplication-or-division-p">Part 2</a>.</em></p>
+---
+layout: post
+title: FizzBuzz without multiplication or division, part 3
+post_time: May  1 2011,  7:37 PM
+---
+<p><em>This is the finale of a three-part series: <a href="http://jacob.jkrall.net/fizzbuzz-without-multiplication-or-division">Part 1</a>, <a href="http://jacob.jkrall.net/fizzbuzz-without-multiplication-or-division-p">Part 2</a>.</em></p>
 <p>FizzBuzz is a good problem for interviews because it allows you an adaptive scale of interesting things to ask. If the candidate struggles to get the most basic solution working, you can spend the whole hour working with them on improving their solution, and let them leave with a good feeling about your company. If the candidate is <a href="http://blog.bitquabit.com/2011/04/14/finding-literate-programmers/" title="Finding Literate Programmers">a super-literate programmer</a>, you get to explore issues such as testing, readability, and maintainability. This is one possible exploration of maintainability.</p>
 <p>Suppose that, instead of the specific game of FizzBuzz, we want to write a program that can play any variant of the FizzBuzz problem, for which FizzBuzz is one specific instance.</p>
 <div class="CodeRay">
@@ -119,55 +93,3 @@ PeriodicReplacement CreatePeriodicReplacement(int c, char* words[], int replaces
 </div>
 
 <p>This approach has the nice quality that precomputation can be saved in a static variable for future iterations, if necessary. I've ignored cleanup code and elided over StrConcat, as they distract from the core of the problem.</p></div>
-<div class='post_responses'>
-<h4>750 views and 6 responses</h4>
-<ul class='post_responses list'>
-<li class='response clearfix'>
-<div class='response_header'>
-<div class='response_time'>May  1 2011, 10:45 PM</div>
-<div class='response_name'>Stefan Rusek responded:</div>
-</div>
-<div class='response_body'>Doesn't the use of a static variable work counter to making it testable?</div>
-</li>
-<li class='response clearfix'>
-<div class='response_header'>
-<div class='response_time'>May  1 2011, 10:49 PM</div>
-<div class='response_name'>krallja responded:</div>
-</div>
-<div class='response_body'>Indeed, it does make testing FizzBuzz harder, but FizzBuzz is just calling into the abstraction of PeriodicReplacement, which is much more testable</div>
-</li>
-<li class='response clearfix'>
-<div class='response_header'>
-<div class='response_time'>May  1 2011, 11:58 PM</div>
-<div class='response_name'>david karapetyan responded:</div>
-</div>
-<div class='response_body'>Your initial circular list approach was pretty nice but this is just mental masturbation.</div>
-</li>
-<li class='response clearfix'>
-<div class='response_header'>
-<div class='response_time'>May  2 2011,  8:25 AM</div>
-<div class='response_name'>krallja responded:</div>
-</div>
-<div class='response_body'>@david: I agree; I lost my motivation in the middle of writing this solution. It was interesting to write, but not nearly as elegant as the previous part.</div>
-</li>
-<li class='response clearfix'>
-<div class='response_header'>
-<div class='response_time'>May  4 2011, 10:34 AM</div>
-<div class='response_name'>Alex Levenson responded:</div>
-</div>
-<div class='response_body'>You could remove the one if statement by doing x=x%max; This would avoid possible branch prediction misses but I'm not sure if it would be faster.</div>
-</li>
-<li class='response clearfix'>
-<div class='response_header'>
-<div class='response_time'>May  4 2011, 10:38 AM</div>
-<div class='response_name'>krallja responded:</div>
-</div>
-<div class='response_body'>@Alex Levenson: I think that would defeat the "without multiplication or division" part of the exercise.</div>
-</li>
-</ul>
-</div>
-</div>
-</div>
-</div>
-</body>
-</html>
