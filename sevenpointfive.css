@@ -46,6 +46,10 @@ a img {
     padding: 10px 30px;
 }
 
+.post img {
+    max-width: 600px;
+}
+
 .header { text-align: center; }
 .header h1 {
     font-size: 42pt;
