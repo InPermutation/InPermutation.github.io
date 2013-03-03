@@ -1,8 +1,13 @@
 ---
 layout: layout
 ---
-<ul>
-{% for post in site.posts %}
-    <li><a href="{{ post.url }}">{{ post.title }}</a></li>
+{% for post in paginator.posts %}
+    <div id="postunit_{PostID}" class="postunit">
+  <div class="unit_inner">
+    <div class="post">
+        <h3><a href="{{ post.url }}" class="structural">{{ post.title }}</a></h3>
+        {{ post.content }}
+    </div>
+  </div>
+</div>
 {% endfor %}
-</ul>

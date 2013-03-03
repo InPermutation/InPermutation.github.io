@@ -2,4 +2,5 @@ safe: true
 permalink: /:title
 title: Lost In Permutation
 description: Starting up...
-
+exclude: ['README.md']
+paginate: 10
