@@ -1,9 +1,11 @@
 ---
 layout: layout
 ---
-<div class="content">
-    <div id="post">
-        <h3><a href="{{ page.url }}">{{ page.title }}</a></h3>
+<div id="postunit_{PostID}" class="postunit">
+  <div class="unit_inner">
+    <div class="post">
+        <h3><a href="{{ page.url }}" class="structural">{{ page.title }}</a></h3>
         {{ content }}
     </div>
+  </div>
 </div>

@@ -1,17 +1,40 @@
-<!DOCTYPE HTML>
-
 <html>
-    <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-        <meta name="author" content="Jacob Krall" />
-        <title>Lost In Permutation</title>
-    </head>
-    <body>
-        <header>
-            <h1><a href="/">Lost In Permutation</a></h1>
-        </header>
-        <section>
-            {{ content }}
-        </section>
-    </body>
+	<head>
+		<title>{{ site.title }}</title>
+        <!-- TODO: RSS
+		<link rel="alternate" type="application/rss+xml" href="#TODO" />
+        -->
+		<link rel="stylesheet" type="text/css" href="/sevenpointfive.css" />
+		<link href='http://fonts.googleapis.com/css?family=EB+Garamond' rel='stylesheet' type='text/css' />
+		<link href='http://fonts.googleapis.com/css?family=Cantarell' rel='stylesheet' type='text/css' />
+		<!--[if lt IE 9]>
+		<style type="text/css">
+			.startup_box {
+				width: 688px; /* 750px minus the inner box's padding and outer box's border because of stupid IE box model */
+			}
+		</style>
+		<![endif]-->
+		
+	</head>
+	<body>
+		<div class="startup_box">
+		  <div class="startup_box_inner">
+			<div class="header">
+				<div class="headunit">
+					<div class="unit_inner">
+						<h1><a href="/" class="structural">{{ site.title }}</a></h1>
+					</div>
+				</div>
+				<h2>{{ site.description }}</h2>
+				<div class="progressbar">
+					<div class="sofar"></div>
+				</div>
+			</div>
+			<div class="posts">
+              {{ content }}
+            </div>
+		  </div>
+		</div>
+		<!-- SevenPointFive theme is Copyright &copy; 2011-2013 Jacob Krall -->
+	</body>
 </html>
