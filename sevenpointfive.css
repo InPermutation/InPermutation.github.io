@@ -20,7 +20,7 @@ html, body {
 body {
     font-size: 12px;
     font-family: Arial, Helvetica, sans-serif;
-    background: url('http://www.jkrall.net/g.png');
+    background: url('/g.png');
     text-align: center; /* IE hack */
 }
 
