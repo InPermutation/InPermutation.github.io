@@ -13,12 +13,12 @@ layout: layout
 {% include footer.html %}
 <div id="extensions">
     {% if page.previous %}
-        <a href="{{ page.previous.url }}" class="previous">Previous</a>
+        <a href="{{ page.previous.url }}" class="previous" title="Previous post">Previous</a>
     {% endif %}
 
     {% include extensions.html %}
 
     {% if page.next %}
-        <a href="{{ page.next.url }}" class="next">Next</a>
+        <a href="{{ page.next.url }}" class="next" title="Next post">Next</a>
     {% endif %}
 </div>
