@@ -1,6 +1,7 @@
 ---
 layout: layout
 ---
+{% include header.html %}
 <div id="postunit_{PostID}" class="postunit">
   <div class="unit_inner">
     <div class="post">
@@ -8,4 +9,16 @@ layout: layout
         {{ content }}
     </div>
   </div>
+</div>
+{% include footer.html %}
+<div id="extensions">
+    {% if page.previous %}
+        <a href="{{ page.previous.url }}" class="previous">Previous</a>
+    {% endif %}
+
+    {% include extensions.html %}
+
+    {% if page.next %}
+        <a href="{{ page.next.url }}" class="next">Next</a>
+    {% endif %}
 </div>
