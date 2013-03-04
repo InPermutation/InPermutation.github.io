@@ -1,4 +1,4 @@
-krallja.github.com
+jacob.jkrall.net
 ==================
 
-blog
+My blog, [Lost in Permutation](http://jacob.jkrall.net), migrated off of Posterous
