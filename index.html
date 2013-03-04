@@ -1,7 +1,6 @@
 ---
 layout: layout
 ---
-{% include header.html %}
 {% for post in paginator.posts %}
 <div id="postunit_{PostID}" class="postunit">
     <div class="unit_inner">
@@ -12,17 +11,3 @@ layout: layout
     </div>
 </div>
 {% endfor %}
-{% include footer.html %}
-
-<div id="extensions">
-    {% if paginator.previous_page %}
-        <a href={% if paginator.previous_page == 1 %}"/"{% else %}"/page{{ paginator.previous_page }}"{% endif %}
-        class="previous" title="Previous page">Previous</a>
-    {% endif %}
-
-    {% include extensions.html %}
-
-    {% if paginator.next_page %}
-        <a href="/page{{ paginator.next_page }}" class="next" title="Next page">Next</a>
-    {% endif %}
-</div>

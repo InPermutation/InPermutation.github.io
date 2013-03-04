@@ -18,7 +18,10 @@
 	</head>
 	<body>
         <div id="container">
+            {% include header.html %}
             {{ content }}
+            {% include footer.html %}
+            {% include extensions.html %}
         </div>
         <!-- SevenPointFive theme is Copyright &copy; 2011-2013 Jacob Krall -->
 	</body>
