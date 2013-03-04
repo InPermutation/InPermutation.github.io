@@ -3,7 +3,10 @@ layout: post
 title: FizzBuzz without multiplication or division, part 3
 post_time: May  1 2011,  7:37 PM
 ---
-<p><em>This is the finale of a three-part series: <a href="http://jacob.jkrall.net/fizzbuzz-without-multiplication-or-division">Part 1</a>, <a href="http://jacob.jkrall.net/fizzbuzz-without-multiplication-or-division-p">Part 2</a>.</em></p>
+<p><em>This is the finale of a three-part series: 
+    <a href="{% post_url 2011-04-17-fizzbuzz-without-multiplication-or-division %}">Part 1</a>, 
+    <a href="{% post_url 2011-04-18-fizzbuzz-without-multiplication-or-division-p %}">Part 2</a>.
+</em></p>
 <p>FizzBuzz is a good problem for interviews because it allows you an adaptive scale of interesting things to ask. If the candidate struggles to get the most basic solution working, you can spend the whole hour working with them on improving their solution, and let them leave with a good feeling about your company. If the candidate is <a href="http://blog.bitquabit.com/2011/04/14/finding-literate-programmers/" title="Finding Literate Programmers">a super-literate programmer</a>, you get to explore issues such as testing, readability, and maintainability. This is one possible exploration of maintainability.</p>
 <p>Suppose that, instead of the specific game of FizzBuzz, we want to write a program that can play any variant of the FizzBuzz problem, for which FizzBuzz is one specific instance.</p>
 <div class="CodeRay">

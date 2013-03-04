@@ -4,7 +4,10 @@ title: FizzBuzz without multiplication or division
 post_time: April 18 2011, 12:11 AM
 ---
 <p><span style="font-size: 12px;">
-<p><em>This is the first of a three-part series: <a href="http://jacob.jkrall.net/fizzbuzz-without-multiplication-or-division-p">Part 2</a>,&nbsp;<a href="http://jacob.jkrall.net/fizzbuzz-without-multiplication-or-division-p-0">Part 3</a>.</em></p>
+    <p><em>This is the first of a three-part series:
+        <a href="{% post_url 2011-04-18-fizzbuzz-without-multiplication-or-division-p %}">Part 2</a>,
+        <a href="{% post_url 2011-05-01-fizzbuzz-without-multiplication-or-division-p-0 %}">Part 3</a>.
+    </em></p>
 <p>&nbsp;</p>
 </span></p>
 <p>I use <a href="http://rosettacode.org/wiki/FizzBuzz">FizzBuzz</a> as a warm-up question on interviews, so I have had time to ponder it quite a bit. As a thought experiment, I wondered if I could come up with an implementation that does not depend on run-time multiplication (or its inverse, division). I decided a very readable approach would be to use a circular look-up table.</p>
