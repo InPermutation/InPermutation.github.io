@@ -1,7 +1,6 @@
 <div id="extensions">
-{% if paginator.previous_page %}
-    <a href={% if paginator.previous_page == 1 %}"/"{% else %}"/page{{ paginator.previous_page }}"{% endif %}
-    class="previous" title="Previous page">Previous</a>
+{% if paginator.next_page %}
+    <a href="/page{{ paginator.next_page }}" class="previous" title="Older posts">Next</a>
 {% elsif page.previous %}
     <a href="{{ page.previous.url }}" class="previous" title="Previous post">Previous</a>
 {% endif %}
@@ -15,8 +14,9 @@
     Twitter
 </a>
 {% endif %}
-{% if paginator.next_page %}
-    <a href="/page{{ paginator.next_page }}" class="next" title="Next page">Next</a>
+{% if paginator.previous_page %}
+    <a href={% if paginator.previous_page == 1 %}"/"{% else %}"/page{{ paginator.previous_page }}"{% endif %}
+    class="next" title="Newer posts">Previous</a>
 {% elsif page.next %}
     <a href="{{ page.next.url }}" class="next" title="Next post">Next</a>
 {% endif %}
