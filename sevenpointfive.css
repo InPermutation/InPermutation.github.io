@@ -21,6 +21,7 @@ body {
     font-size: 12px;
     font-family: Arial, Helvetica, sans-serif;
     background: url('/g.png');
+    background-attachment: fixed;
     text-align: center; /* IE hack */
 }
 
@@ -126,4 +127,10 @@ a.structural:active { color: #999; }
 }
 .twitter {
     background-image: url('twitter.png')
+}
+
+tt {
+    background-color: rgb(248, 248, 255);
+    border: 1px solid rgb(221, 221, 221);
+    padding: 1px;
 }
