@@ -1,7 +1,7 @@
 ---
 layout: layout
 ---
-<div id="postunit_{PostID}" class="postunit">
+<div id="postunit{{ page.id | replace:'/','-' }}" class="postunit">
   <div class="unit_inner">
     <div class="post">
         <h3><a href="{{ page.url }}" class="structural">{{ page.title }}</a></h3>

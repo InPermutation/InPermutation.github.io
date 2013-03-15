@@ -2,7 +2,7 @@
 layout: layout
 ---
 {% for post in paginator.posts %}
-<div id="postunit_{PostID}" class="postunit">
+<div id="postunit{{ post.id | replace:'/','-' }}" class="postunit">
     <div class="unit_inner">
         <div class="post">
             <h3><a href="{{ post.url }}" class="structural">{{ post.title }}</a></h3>
