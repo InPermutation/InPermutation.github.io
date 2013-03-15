@@ -14,6 +14,11 @@
     Twitter
 </a>
 {% endif %}
+{% if site.linkedin %}
+<a href="https://linkedin.com/in/{{ site.linkedin }}" class="linkedin" title="LinkedIn">
+    LinkedIn
+</a>
+{% endif %}
 {% if paginator.previous_page %}
     <a href={% if paginator.previous_page == 1 %}"/"{% else %}"/page{{ paginator.previous_page }}"{% endif %}
     class="next" title="Newer posts">Previous</a>
