@@ -1,6 +1,7 @@
 safe: true
 permalink: /:title
 title: Lost In Permutation
+author: Jacob Krall
 description: Starting up...
 exclude: ['README.md']
 paginate: 10
