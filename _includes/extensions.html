@@ -14,6 +14,11 @@
     Twitter
 </a>
 {% endif %}
+{% if site.stackoverflow %}
+<a href="http://stackoverflow.com/users/{{ site.stackoverflow }}" class="stackoverflow" title="{{ site.author}} on Stack Overflow">
+    Stack Overflow
+</a>
+{% endif %}
 {% if site.linkedin %}
 <a href="https://linkedin.com/in/{{ site.linkedin }}" class="linkedin" title="{{ site.author }} on LinkedIn">
     LinkedIn

@@ -115,6 +115,7 @@ a.structural:active { color: #999; }
     display: inline-block;
     color: transparent;
     text-decoration: none;
+    overflow: hidden;
 }
 .previous {
     background-image: url('previous.png')
@@ -130,6 +131,9 @@ a.structural:active { color: #999; }
 }
 .linkedin {
     background-image: url('linkedin.png')
+}
+.stackoverflow {
+    background-image: url('stackoverflow.png')
 }
 
 tt {
