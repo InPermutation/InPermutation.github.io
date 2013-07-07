@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg height="400" width="490" version="1.1" baseProfile="full" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:ev="http://www.w3.org/2001/xml-events">
+    <path class="undefined" stroke-width="2" stroke="red" fill="none" d="M0,399.77118050763016Q0.19149975574010747,399.2802942462214,0.23937469467513434,399.20988824856914C0.3111871030776746,399.10427925209075,0.5744992672203225,398.8064227675786,0.7181240840254031,398.7150905428464S1.3883732291157793,398.38555135939066,1.6756228627259404,398.29656600124684S3.0161211529066927,397.84459861076255,3.590620420127015,397.82523696140817S6.27161700048852,398.25217110828277,7.420615534929165,398.10294950770316S12.782608695652174,396.8078702953331,15.080605764533463,396.3330209556118S25.804592085979483,393.9059697587661,30.40058622374206,393.3544561104901S51.8485588666341,392.00442110550813,61.040547142159255,390.817884472852S103.93649242794334,384.1723405833421,122.32046897899365,381.4890897839284S208.11235955056182,362.42021203646266,244.88031265266244,363.9853764787154Q269.39228138739617,365.0288194402172,490,397.1407342064557"/>
+    <path class="undefined" stroke-width="2" stroke="blue" fill="none" d="M0,315.22335593805894Q0.19149975574010747,334.8904890933531,0.23937469467513434,328.85082792808396C0.3111871030776746,319.7913361801803,0.5744992672203225,257.11748164786997,0.7181240840254031,224.62843845902196S1.3883732291157793,18.57668115221174,1.6756228627259404,3.9603960396039497S3.0161211529066927,74.5645083463621,3.590620420127015,78.46558733294404S6.27161700048852,23.99227137717995,7.420615534929165,42.97118590542334S12.782608695652174,269.30045725272964,15.080605764533463,268.254732615378S25.804592085979483,42.98937412148351,30.40058622374206,32.513939531906715S51.8485588666341,158.25513989451713,61.040547142159255,163.50038671961S103.93649242794334,97.79125139962474,122.32046897899365,84.9664077828354S208.11235955056182,42.002516721057745,244.88031265266244,35.25195055171656Q269.39228138739617,30.751573105489104,490,17.460746089423537"/>
+    <g transform="translate(0,400)" class="x_ticks_d3 plain">
+        <g transform="translate(59.60429897410845,0)" style="opacity: 1;" class="tick major">
+            <line x2="0" y2="-4"/>
+            <text style="text-anchor: middle;" dy="0em" x="0" y="-7">2k</text>
+        </g>
+        <g transform="translate(119.44797264289204,0)" style="opacity: 1;" class="tick major">
+            <line x2="0" y2="-4"/>
+            <text style="text-anchor: middle;" dy="0em" x="0" y="-7">4k</text>
+        </g>
+        <g transform="translate(179.2916463116756,0)" style="opacity: 1;" class="tick major">
+            <line x2="0" y2="-4"/>
+            <text style="text-anchor: middle;" dy="0em" x="0" y="-7">6k</text>
+        </g>
+        <g transform="translate(239.13531998045923,0)" style="opacity: 1;" class="tick major">
+            <line x2="0" y2="-4"/>
+            <text style="text-anchor: middle;" dy="0em" x="0" y="-7">8k</text>
+        </g>
+        <g transform="translate(298.9789936492428,0)" style="opacity: 1;" class="tick major">
+            <line x2="0" y2="-4"/>
+            <text style="text-anchor: middle;" dy="0em" x="0" y="-7">10k</text>
+        </g>
+        <g transform="translate(358.8226673180264,0)" style="opacity: 1;" class="tick major">
+            <line x2="0" y2="-4"/>
+            <text style="text-anchor: middle;" dy="0em" x="0" y="-7">12k</text>
+        </g>
+        <g transform="translate(418.6663409868099,0)" style="opacity: 1;" class="tick major">
+            <line x2="0" y2="-4"/>
+            <text style="text-anchor: middle;" dy="0em" x="0" y="-7">14k</text>
+        </g>
+        <g transform="translate(478.5100146555936,0)" style="opacity: 1;" class="tick major">
+            <line x2="0" y2="-4"/>
+            <text style="text-anchor: middle;" dy="0em" x="0" y="-7">16k</text>
+        </g>
+    </g>
+    <g class="x_grid_d3">
+        <g transform="translate(59.60429897410845,0)" style="opacity: 1;" class="tick major">
+            <line x2="0" y2="400"/>
+            <text style="text-anchor: middle;" dy="0em" x="0" y="-3">2k</text>
+        </g>
+        <g transform="translate(119.44797264289204,0)" style="opacity: 1;" class="tick major">
+            <line x2="0" y2="400"/>
+            <text style="text-anchor: middle;" dy="0em" x="0" y="-3">4k</text>
+        </g>
+        <g transform="translate(179.2916463116756,0)" style="opacity: 1;" class="tick major">
+            <line x2="0" y2="400"/>
+            <text style="text-anchor: middle;" dy="0em" x="0" y="-3">6k</text>
+        </g>
+        <g transform="translate(239.13531998045923,0)" style="opacity: 1;" class="tick major">
+            <line x2="0" y2="400"/>
+            <text style="text-anchor: middle;" dy="0em" x="0" y="-3">8k</text>
+        </g>
+        <g transform="translate(298.9789936492428,0)" style="opacity: 1;" class="tick major">
+            <line x2="0" y2="400"/>
+            <text style="text-anchor: middle;" dy="0em" x="0" y="-3">10k</text>
+        </g>
+        <g transform="translate(358.8226673180264,0)" style="opacity: 1;" class="tick major">
+            <line x2="0" y2="400"/>
+            <text style="text-anchor: middle;" dy="0em" x="0" y="-3">12k</text>
+        </g>
+        <g transform="translate(418.6663409868099,0)" style="opacity: 1;" class="tick major">
+            <line x2="0" y2="400"/>
+            <text style="text-anchor: middle;" dy="0em" x="0" y="-3">14k</text>
+        </g>
+        <g transform="translate(478.5100146555936,0)" style="opacity: 1;" class="tick major">
+            <line x2="0" y2="400"/>
+            <text style="text-anchor: middle;" dy="0em" x="0" y="-3">16k</text>
+        </g>
+    </g>
+    <g class="y_ticks plain">
+        <g transform="translate(0,400)" style="opacity: 1;" class="tick major">
+            <line y2="0" x2="4"/>
+            <text style="text-anchor: start;" dy=".32em" y="0" x="7">0s</text>
+        </g>
+        <g transform="translate(0,302.21389214964813)" style="opacity: 1;" class="tick major">
+            <line y2="0" x2="4"/>
+            <text style="text-anchor: start;" dy=".32em" y="0" x="7">50s</text>
+        </g>
+        <g transform="translate(0,204.4277842992963)" style="opacity: 1;" class="tick major">
+            <line y2="0" x2="4"/>
+            <text style="text-anchor: start;" dy=".32em" y="0" x="7">100s</text>
+        </g>
+        <g transform="translate(0,106.6416764489444)" style="opacity: 1;" class="tick major">
+            <line y2="0" x2="4"/>
+            <text style="text-anchor: start;" dy=".32em" y="0" x="7">150s</text>
+        </g>
+        <g transform="translate(0,8.855568598592583)" style="opacity: 1;" class="tick major">
+            <line y2="0" x2="4"/>
+            <text style="text-anchor: start;" dy=".32em" y="0" x="7">200s</text>
+        </g>
+    </g>
+    <g class="y_grid">
+        <g transform="translate(0,400)" style="opacity: 1;" class="tick major">
+            <line y2="0" x2="490"/>
+            <text style="text-anchor: start;" dy=".32em" y="0" x="493">0s</text>
+        </g>
+        <g transform="translate(0,302.21389214964813)" style="opacity: 1;" class="tick major">
+            <line y2="0" x2="490"/>
+            <text style="text-anchor: start;" dy=".32em" y="0" x="493">50s</text>
+        </g>
+        <g transform="translate(0,204.4277842992963)" style="opacity: 1;" class="tick major">
+            <line y2="0" x2="490"/>
+            <text style="text-anchor: start;" dy=".32em" y="0" x="493">100s</text>
+        </g>
+        <g transform="translate(0,106.6416764489444)" style="opacity: 1;" class="tick major">
+            <line y2="0" x2="490"/>
+            <text style="text-anchor: start;" dy=".32em" y="0" x="493">150s</text>
+        </g>
+        <g transform="translate(0,8.855568598592583)" style="opacity: 1;" class="tick major">
+            <line y2="0" x2="490"/>
+            <text style="text-anchor: start;" dy=".32em" y="0" x="493">200s</text>
+        </g>
+    </g>
+</svg>
