@@ -6,33 +6,33 @@ post_time: August  9 2011,  4:46 PM
 <p><em>I wrote <a href="http://eat.cheezburger.com/development-practices/cheezburger-dvcs-workflow-a-history/">an article on my company's technology blog</a>!</em></p>
 <p>&nbsp;</p>
 <p>In the beginning was the Code, and the Code was with Subversion, and the Code was Subversion. Cheezburger was with Subversion in the beginning.<a href="http://eat.cheezburger.com/development-practices/cheezburger-dvcs-workflow-a-history/attachment/0svn/" rel="attachment wp-att-256"><br /><div class='p_embed p_image_embed'>
-<img src='../../../image/2011/10/33146906-0svn.png'>
+<img src='{{ site.url }}/image/2011/10/33146906-0svn.png'>
 </div>
 </a></p>
 <p>&nbsp;</p>
 <p>Subversion was good, but, as a globally distributed team, Cheezburger really needed a way for developers to work offline, without having to coordinate with each other. Somebody ran an import script, and just like that Cheezburger was on Mercurial. There was one repository, &ldquo;Current&rdquo;, on the&nbsp;<a href="http://www.fogcreek.com/kiln/">Kiln</a>&nbsp;server, and we released by tagging and shipping from that same repository.</p>
 <p>&nbsp;</p>
 <p><a href="http://eat.cheezburger.com/development-practices/cheezburger-dvcs-workflow-a-history/attachment/0svn/" rel="attachment wp-att-256"><div class='p_embed p_image_embed'>
-<img src='../../../image/2011/10/33146907-1hg.png'>
+<img src='{{ site.url }}/image/2011/10/33146907-1hg.png'>
 </div>
 </a></p>
 <p>&nbsp;</p>
 <p>Eventually we realized that sometimes features take longer than a single release cycle to create, but we still want to push them to a staging server or show them to someone else. Using Kiln, branching was supremely easy, so we created branches for long-lived features and teams. The central integration repository was called Current, and we would tag and release from that repository.</p>
 <p><a href="http://eat.cheezburger.com/development-practices/cheezburger-dvcs-workflow-a-history/attachment/0svn/" rel="attachment wp-att-256"><div class='p_embed p_image_embed'>
-<img src='../../../image/2011/10/33146909-2hgclone.png'>
+<img src='{{ site.url }}/image/2011/10/33146909-2hgclone.png'>
 </div>
 </a></p>
 <br />
 <p>A new problem arose with this system; namely, that it wasn&rsquo;t clear which changes had been tested by our automatic continuous integration system, so in May 2011, we added a new branch called &ldquo;Approved&rdquo; that the CI system would push approved changesets to, and we shipped from there after tagging Current.</p>
 <p>&nbsp;</p>
 <p><div class='p_embed p_image_embed'>
-<img src='../../../image/2011/10/33146910-3approved.png'>
+<img src='{{ site.url }}/image/2011/10/33146910-3approved.png'>
 </div>
 This system worked pretty well for a while, but every once in a while, a team would want to push a gigantic merge with old changes from their branch into Current in order to release. Then, the CI system would detect a failure, or the QA team would identify a fatal flaw, or the team would get cold feet for some other reason. Unfortunately, all the other teams would do the sensible thing and merge with Current, so their branches were also infected with the unreleasable code. Changesets got backed up behind the misfired release, tempers flared, developers threatened violence on&nbsp;<a href="http://icanhascheezburger.com/">lolcats</a>. The first time this happened, promises were made that it wouldn&rsquo;t happen again.</p>
 <p>&nbsp;</p>
 <p>Then it happened again, with predictable results. Lolcats flared, developers got backed up behind the misfired release, and changesets threatened violence on tempers. A company crisis was declared, and a Serious Meeting was held. There was talk of separating the app into siloed services, which is certainly a viable solution, but would take a very significant amount of code and work. Eventually, the team decided on another change to our repository layout that would avoid this infuriating problem.</p>
 <p><div class='p_embed p_image_embed'>
-<img src='../../../image/2011/10/33146911-4newsystem.png'>
+<img src='{{ site.url }}/image/2011/10/33146911-4newsystem.png'>
 </div>
 </p>
 <p>The rules of the system are pretty simple:</p>
