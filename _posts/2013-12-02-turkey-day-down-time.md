@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Turkey Day Down Time
-date: 2013-12-02T22:49Z
+date: 2013-12-03T22:49Z
 ---
 *Based on a true story, Thanksgiving 2012.*
 
