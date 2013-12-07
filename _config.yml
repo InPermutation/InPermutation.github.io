@@ -6,7 +6,7 @@ description: Starting up...
 exclude: ['README.md']
 paginate: 10
 twitter: InPermutation
-github: krallja
+github: InPermutation
 linkedin: permutation
 stackoverflow: 3140/jacob-krall
 pygments: true
