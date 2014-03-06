@@ -1,6 +1,7 @@
 ---
 layout: post
-title: The Lost Binary Boolean Operator
+title: "Binary Boolean Operator: The Lost Levels"
+date: "Wed, 05 Mar 2014 21:52:00-0500"
 ---
 There are sixteen possible binary operations on Boolean inputs.
 The operations can be numbered based on the truth table used to generate them.
