@@ -52,18 +52,18 @@ I only know one language that implementes this operation: [VBScript][1].
 
 Instead of writing a test like this:
 
-```python
+{% highlight python %}
 if needs_val:
     assert(has_val())
-```
+{% endhighlight %}
 or the logically identical, but difficult to read:
-```python
+{% highlight python %}
 assert(not needs_val or has_val()) # BAD! Precedence is difficult to reason about.
-```
+{% endhighlight %}
 you could write it like this:
-```python
+{% highlight python %}
 assert(needs_val Imp has_val()) # AWESOME! (If `Imp` exists!)
-```
+{% endhighlight %}
 Once you get the hang of this operator, you start wishing you could use it everywhere.
 I wish more languages supported `Imp`.
 
