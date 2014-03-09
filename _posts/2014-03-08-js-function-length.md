@@ -1,5 +1,5 @@
 ---
-layout: post
+layout: copyablepost
 title: Using function.length to implement a stack language
 date: "Sat, 08 Mar 2014 23:15:00-0500"
 ---

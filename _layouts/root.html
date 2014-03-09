@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+	<head>
+        <meta charset="UTF-8" />
+        <title>{% if page.title %}{{ page.title}}{% else %}{{ site.title }}{% endif %}</title>
+        {% if site.author %}
+        <meta name="author" content="{{ site.author }}" />
+        {% endif %}
+		<link rel="alternate" type="application/rss+xml" href="{{ site.url }}/rss.xml" />
+		<link rel="stylesheet" type="text/css" href="/sevenpointfive.css" />
+		<link rel="stylesheet" type="text/css" href="/syntax.css" />
+		<link rel='stylesheet' type='text/css' href='http://fonts.googleapis.com/css?family=EB+Garamond' />
+		<link rel='stylesheet' type='text/css' href='http://fonts.googleapis.com/css?family=Cantarell' />
+		<!--[if lt IE 9]>
+		<style type="text/css">
+			.startup_box {
+				width: 688px; /* 750px minus the inner box's padding and outer box's border because of stupid IE box model */
+			}
+		</style>
+		<![endif]-->
+	</head>
+	<body>
+        <div id="container">
+        {{ content }}
+        </div>
+        <!-- SevenPointFive theme is Copyright &copy; 2011-2013 Jacob Krall -->
+	</body>
+</html>
