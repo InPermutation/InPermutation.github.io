@@ -98,7 +98,7 @@ back on top of the stack.
 
 Multiple values can be returned in an array;
 `Array.prototype.concat` will correctly concatenate
-all of values to `this.stack` in the intended order.
+all of the values to `this.stack` in the intended order.
 \*/
 {% highlight js %}
 {% raw %}
