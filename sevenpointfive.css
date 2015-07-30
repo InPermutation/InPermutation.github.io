@@ -14,7 +14,7 @@ html, body {
     height: 32px;
 }
 #body{
-    padding-bottom: 50px;
+    padding: 0 10px 50px 10px;
 }
 
 body {
@@ -31,7 +31,7 @@ a img {
 
 .startup_box {
     text-align: left; /* IE hack */
-    width: 750px;
+    max-width: 750px;
     margin-left: auto;
     margin-right: auto;
     margin-top: 47px;
@@ -39,7 +39,7 @@ a img {
     border: 1px solid #000;
 }
 .startup_box_inner {
-    width: 678px; /* 750px - 1px (left border) - 35px (left padding) - 35px (right padding) - 1px (right border) */
+    max-width: 678px; /* 750px - 1px (left border) - 35px (left padding) - 35px (right padding) - 1px (right border) */
     border-left: 1px solid #FFF;
     border-top: 1px solid #FFF;
     border-bottom: 1px solid #AAA;
@@ -60,7 +60,8 @@ a img {
 
 .unit_inner {
     border: 1px solid #000;
-    width: 614px;
+    max-width: 614px;
+    overflow-x: auto;
     padding: 10px 30px;
 }
 
@@ -75,6 +76,11 @@ a img {
     font-weight: normal;
     font-family: 'EB Garamond', serif;
     letter-spacing: -3px;
+}
+@media only screen and (max-width: 420px) {
+    .header h1 {
+        font-size: 24pt;
+    }
 }
 .header h2 {
     font-size: 10pt;
