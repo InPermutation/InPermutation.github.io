@@ -67,5 +67,5 @@ assert(needs_val Imp has_val()) # AWESOME! (If `Imp` exists!)
 Once you get the hang of this operator, you start wishing you could use it everywhere.
 I wish more languages supported `Imp`.
 
-[1]: http://msdn.microsoft.com/en-us/library/57eas59d%28v=vs.84%29.aspx "VBScript Imp Operator"
+[1]: https://msdn.microsoft.com/en-us/library/57eas59d%28v=vs.84%29.aspx "VBScript Imp Operator"
 [2]: https://en.wikipedia.org/wiki/Material_implication_%28rule_of_inference%29

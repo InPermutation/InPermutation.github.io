@@ -41,6 +41,6 @@ But whatever you do, stay away from the words "everything", "nothing",
 
 **Say something!**
 
-[1]: http://sivers.org/say-what-you-sound-like
-[2]: http://sivers.org/dont-assume
+[1]: https://sivers.org/say-what-you-sound-like
+[2]: https://sivers.org/dont-assume
 [3]: http://www.paulgraham.com/avg.html
