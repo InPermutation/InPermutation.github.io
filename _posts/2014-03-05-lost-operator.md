@@ -7,19 +7,19 @@ There are sixteen possible binary operations on Boolean inputs.
 The operations can be numbered based on the truth table used to generate them.
 For example, the `AND` function is defined by the following truth table:
 
-```
+<pre>
 P   Q   |  P AND Q
 --------+---------
 1   1   |     1
 1   0   |     0
 0   1   |     0
 0   0   |     0
-```
+</pre>
 By reading down the result column, we determine that `AND` is function number `1000b`, or **8** in decimal.
 
 Here are all 16 of the binary Boolean operations:
 
-```
+<pre>
 #   |  11   10   01   00  |   Common name
 ----+---------------------+--------------
 0   |  0    0    0    0   |   False
@@ -38,7 +38,7 @@ Here are all 16 of the binary Boolean operations:
 13  |  1    1    0    1   |
 14  |  1    1    1    0   |   OR
 15  |  1    1    1    1   |   True
-```
+</pre>
 Almost all of these operators are familiar, but there are four less-familiar operators.
 11 and 13 are the same operation, but with their input order reversed.
 4 and 2 are the inverses of those two, respectively.
