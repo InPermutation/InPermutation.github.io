@@ -10,6 +10,6 @@ twitter: InPermutation
 github: InPermutation
 linkedin: permutation
 stackoverflow: 3140/jacob-krall
-pygments: true
+highlighter: pygments
 url: http://jacob.jkrall.net
 encoding: utf-8
