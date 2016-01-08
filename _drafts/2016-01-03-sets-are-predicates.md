@@ -23,25 +23,29 @@ All of these types have a `Contains` method, which can be stored as a `Predicate
 Is the converse also true? Can we create a set from predicates? Let's declare a `PredicateSet` in C# 6:
 
 {% highlight csharp %}{% raw %}
-using NUnit.Framework;
+using System;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.Collections.Generic;
+using System.Linq;
 
-public partial class PredicateSet<T>(Predicate<T> indicator)
-{
+public partial class PredicateSet<T> {
+    private readonly Predicate<T> indicator;
+    public PredicateSet(Predicate<T> indicator) {
+        this.indicator = indicator;
+    }
+
     public bool Contains(T item) => indicator(item);
 }
 
-namespace Test
-{
-    [TestFixture]
-    public partial class PredicateSetTest
-    {
-        [Test]
-        public void ItemTest()
-        {
+namespace Test {
+    [TestClass]
+    public partial class PredicateSetTest {
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethod]
+        public void ItemTest() {
             var ps = new PredicateSet<int>(i => i == 2);
-            Assert.False(ps.Contains(0));
-            Assert.True(ps.Contains(2));
-            Assert.False(ps.Contains(100));
+            Assert.IsFalse(ps.Contains(0));
+            Assert.IsTrue(ps.Contains(2));
+            Assert.IsFalse(ps.Contains(100));
         }
     }
 }
@@ -50,37 +54,43 @@ namespace Test
 That looks sort of like a set. It seems like we can define more interesting sets already, too:
 
 {% highlight csharp %}{% raw %}
-namespace Test
-{
-    partial class PredicateSetTest
-    {
-        [Test]
-        public void OddsTest()
-        {
+namespace Test {
+    partial class PredicateSetTest {
+        [TestMethod]
+        public void OddsTest() {
             var odds = new PredicateSet<int>(i => (i & 1) == 1);
-            Assert.False(ps.Contains(0));
-            Assert.True(ps.Contains(1));
-            Assert.False(ps.Contains(2));
-            Assert.True(ps.Contains(3));
-            Assert.False(ps.Contains(-157204));
-            Assert.True(ps.Contains(-157203));
-            Assert.False(ps.Contains(65432));
-            Assert.True(ps.Contains(65431));
+            Assert.IsFalse(odds.Contains(0));
+            Assert.IsTrue(odds.Contains(1));
+            Assert.IsFalse(odds.Contains(2));
+            Assert.IsTrue(odds.Contains(3));
+            Assert.IsFalse(odds.Contains(-157204));
+            Assert.IsTrue(odds.Contains(-157203));
+            Assert.IsFalse(odds.Contains(65432));
+            Assert.IsTrue(odds.Contains(65431));
         }
 
-        /// All the integers
-        private static readonly IEnumerable<int> Integers =
-            Enumerable.Range(int.MinValue, int.MaxValue).Concat(Enumerable.Range(0, int.MaxValue));
+        private static readonly Random Random = new Random();
+        /// It takes too long to run our tests on all the integers, so let's just try some random ones
+        private static IEnumerable<int> SomeIntegers() {
+            yield return int.MinValue;
+            yield return int.MinValue + 1;
+            yield return int.MaxValue;
+            yield return int.MaxValue - 1;
+            foreach (var i in Enumerable.Range(100, 200)) {
+                yield return i;
+            }
+            foreach (var i in Enumerable.Range(1, 32768)) {
+                yield return Random.Next(int.MinValue, int.MaxValue);
+            }
+        }
 
-        [Test]
-        public void SpecialSets()
-        {
+        [TestMethod]
+        public void SpecialSets() {
             var empty = new PredicateSet<int>(i => false);
             var universal = new PredicateSet<int>(i => true);
-            foreach (var i in Integers)
-            {
-                Assert.True(universal.Contains(i));
-                Assert.False(empty.Contains(i));
+            foreach (var i in SomeIntegers()) {
+                Assert.IsTrue(universal.Contains(i), "i={0}", i);
+                Assert.IsFalse(empty.Contains(i), "i={0}", i);
             }
         }
     }
@@ -90,42 +100,96 @@ namespace Test
 It's a neat trick. Can we add set algebra?
 
 {% highlight csharp %}{% raw %}
-public partial class PredicateSet<T>
-{
-    PredicateSet<T> Union(PredicateSet<T> other) =>
+public partial class PredicateSet<T> {
+    public PredicateSet<T> Union(PredicateSet<T> other) =>
         new PredicateSet<T>(v => this.indicator(v) || other.indicator(v));
 
-    PredicateSet<T> Intersection(PredicateSet<T> other) =>
+    public PredicateSet<T> Intersection(PredicateSet<T> other) =>
         new PredicateSet<T>(v => this.indicator(v) && other.indicator(v));
 
-    PredicateSet<T> Complement() => new PredicateSet<T>(v => !this.indicator(v));
+    public PredicateSet<T> Complement() => new PredicateSet<T>(v => !this.indicator(v));
 }
-namespace Test
-{
-    partial class PredicateSetTest
-    {
-        [Test]
-        public void UnionTest()
-        {
+namespace Test {
+    partial class PredicateSetTest {
+        [TestMethod]
+        public void UnionTest() {
             var a = new PredicateSet<int>(i => i == 3);
             var b = new PredicateSet<int>(i => i > 5 && i < 8);
             var u1 = a.Union(b);
             var u2 = b.Union(a); // assert commutivity
-            for (var u in new[] { u1, u2 })
-            {
-                Assert.False(u.Contains(2));
-                Assert.True(u.Contains(3));
-                Assert.False(u.Contains(4));
-                Assert.False(u.Contains(5));
-                Assert.True(u.Contains(6));
-                Assert.True(u.Contains(7));
-                Assert.False(u.Contains(8));
+            foreach (var u in new[] { u1, u2 }) {
+                Assert.IsFalse(u.Contains(2));
+                Assert.IsTrue(u.Contains(3));
+                Assert.IsFalse(u.Contains(4));
+                Assert.IsFalse(u.Contains(5));
+                Assert.IsTrue(u.Contains(6));
+                Assert.IsTrue(u.Contains(7));
+                Assert.IsFalse(u.Contains(8));
             }
         }
 
-        [Test]
-        public void 
+        [TestMethod]
+        public void IntersectionTest() {
+            var odd = new PredicateSet<int>(i => (i & 1) == 1);
+            var b = new PredicateSet<int>(i => i > 5 && i < 8);
+            var i1 = odd.Intersection(b);
+            var i2 = b.Intersection(odd); // assert commutivity
+            foreach (var u in new[] { i1, i2 }) {
+                foreach (var i in SomeIntegers()) {
+                    bool shouldContain = (i == 7);
+                    Assert.AreEqual(shouldContain, i1.Contains(i), "i={0}", i);
+                    Assert.AreEqual(shouldContain, i2.Contains(i), "i={0}", i);
+                }
+            }
+        }
+
+        [TestMethod]
+        public void ComplementTest() {
+            var odds = new PredicateSet<int>(i => (i & 1) == 1);
+            var evens = odds.Complement();
+            foreach (var i in SomeIntegers()) {
+                Assert.AreNotEqual(odds.Contains(i), evens.Contains(i));
+            }
+        }
     }
 }
 {% endraw %}{% endhighlight %}
 
+Well, that's a very powerful way to define sets. Why isn't it used more?
+
+Unfortunately, you can't implement any of the existing interfaces for sets. They all want to be `IEnumerable<T>`. There's no way for a `PredicateSet` to be able to generate all of the elements that are contained in it, or even count them.
+
+{% highlight csharp %}{% raw %}
+var allUppercaseStrings = new PredicateSet<string>(s => s.ToUpper() == s);
+allUppercaseStrings.Count(); // ???
+for (string s in allUppercaseStrings) {
+    // ???
+}
+{% endraw %}{% endhighlight %}
+
+Similarly, set relations like `Subset`, `Superset`, and `Equals` are impossible to calculate.
+
+Here's the total source code for the `PredicateSet` class:
+
+PredicateSet.cs
+===============
+
+{% highlight chsarp %}{% raw %}
+using System;
+
+public partial class PredicateSet<T> {
+    private readonly Predicate<T> indicator;
+    public PredicateSet(Predicate<T> indicator) {
+        this.indicator = indicator;
+    }
+
+    public bool Contains(T item) => indicator(item);
+    public PredicateSet<T> Union(PredicateSet<T> other) =>
+        new PredicateSet<T>(v => this.indicator(v) || other.indicator(v));
+
+    public PredicateSet<T> Intersection(PredicateSet<T> other) =>
+        new PredicateSet<T>(v => this.indicator(v) && other.indicator(v));
+
+    public PredicateSet<T> Complement() => new PredicateSet<T>(v => !this.indicator(v));
+}
+{% endraw %}{% endhighlight %}
