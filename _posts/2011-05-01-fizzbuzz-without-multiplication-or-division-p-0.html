@@ -25,7 +25,7 @@ void FizzBuzz(int n) {
 }
 {% endraw %}{% endhighlight %}
 
-<p>To do this, we need to define three things: the type PeriodicReplacement, and the two functions used to create and execute periodic replacements. The type itself is simply to abstract away the difficulty of C array management.</p>
+<p>To do this, we need to define three things: the type <code>PeriodicReplacement</code>, and the two functions used to create and execute periodic replacements. The type itself is simply to abstract away the difficulty of C array management.</p>
 {% highlight c %}{% raw %}
 typedef struct {
   int Length;
@@ -33,7 +33,7 @@ typedef struct {
 } PeriodicReplacement;
 {% endraw %}{% endhighlight %}
 
-<p>ExecutePeriodicReplacement is simply the code from Part 2 modified slightly to use our PeriodicReplacement type instead of a local array and magic number 15.</p>
+<p><code>ExecutePeriodicReplacement</code> is simply the code from Part 2 modified slightly to use our <code>PeriodicReplacement</code> type instead of a local array and magic number 15.</p>
 {% highlight c %}{% raw %}
 void ExecutePeriodicReplacement(PeriodicReplacement orders, int n) {
   int ix = 1;
@@ -47,7 +47,7 @@ void ExecutePeriodicReplacement(PeriodicReplacement orders, int n) {
   }
 }
 {% endraw %}{% endhighlight %}
-<p>The meat of the problem is in the CreatePeriodicReplacement function. It is passed any divisors and their replacements, along with the count, and does all the precomputation necessary to create an array like `rg` in Part 2. In order to reduce the number of reallocations, the shortest possible PeriodicReplacement.Length will be calculated as the least common multiple of the divisors.</p>
+<p>The meat of the problem is in the <code>CreatePeriodicReplacement</code> function. It is passed any divisors and their replacements, along with the count, and does all the precomputation necessary to create an array like <code>rg</code> in Part 2. In order to reduce the number of reallocations, the shortest possible <code>PeriodicReplacement.Length</code> will be calculated as the least common multiple of the divisors.</p>
 {% highlight c %}{% raw %}
 int LeastCommonMultiple(int c, int r[]) {
   int* counters = calloc(c, sizeof(int));
