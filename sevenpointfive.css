@@ -65,7 +65,7 @@ a img {
 #main th, #main td {
     padding: 0;
     display: inline-block;
-    height: 24px;
+    min-height: 24px;
 }
 #main th a {
     color: #ccc;
