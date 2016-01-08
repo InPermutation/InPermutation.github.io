@@ -1,13 +1,22 @@
 ---
 layout: layout
 ---
-{% for post in paginator.posts %}
-<div id="postunit{{ post.id | replace:'/','-' }}" class="postunit">
+<div class="postunit" id="main">
     <div class="unit_inner">
-        <div class="post">
-            <h3><a href="{{ post.url }}" class="structural">{{ post.title }}</a></h3>
-            {{ post.content }}
-        </div>
+        <table><tbody>
+{% for post in site.posts %}<tr>
+        <th>
+            <a href="{{ post.url }}" class="structural">
+            {{ post.date | date_to_string }}
+            </a>
+        </th>
+        <td>
+            <a href="{{ post.url }}" class="structural">
+            {{ post.title }}
+            </a>
+        </td>
+    </tr>
+{% endfor %}
+        </tbody></table>
     </div>
 </div>
-{% endfor %}

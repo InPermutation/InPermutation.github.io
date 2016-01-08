@@ -4,8 +4,6 @@ title: Lost In Permutation
 author: Jacob Krall
 description: Starting up...
 exclude: ['README.md']
-paginate: 10
-gems: [jekyll-paginate]
 twitter: InPermutation
 github: InPermutation
 linkedin: permutation
