@@ -3,30 +3,35 @@ layout: post
 title: FizzBuzz without multiplication or division
 post_time: April 18 2011, 12:11 AM
 ---
-<p><span style="font-size: 12px;">
+<p>
     <p><em>This is the first of a three-part series:
         <a href="{% post_url 2011-04-18-fizzbuzz-without-multiplication-or-division-p %}">Part 2</a>,
         <a href="{% post_url 2011-05-01-fizzbuzz-without-multiplication-or-division-p-0 %}">Part 3</a>.
     </em></p>
+</p>
 <p>&nbsp;</p>
-</span></p>
-<p>I use <a href="http://rosettacode.org/wiki/FizzBuzz">FizzBuzz</a> as a warm-up question on interviews, so I have had time to ponder it quite a bit. As a thought experiment, I wondered if I could come up with an implementation that does not depend on run-time multiplication (or its inverse, division). I decided a very readable approach would be to use a circular look-up table.</p>
-<div class="CodeRay">
-  <div class="code"><pre>void FizzBuzz(int n) {
+<p>I use <a href="http://rosettacode.org/wiki/FizzBuzz">FizzBuzz</a> as a warm-up question on interviews, so I have had time to ponder it quite a bit.
+As a thought experiment, I wondered if I could come up with an implementation that does not depend on run-time multiplication (or its inverse, division).
+I decided a very readable approach would be to use a circular look-up table.</p>
+{% highlight c %}{% raw %}
+void FizzBuzz(int n) {
   int rg[15] = { 15, 0, 0, 3, 0, 5, 3, 0, 0, 3, 5, 0, 3, 0, 0 };
   int ix = 1;
-
-  for(int i=1; i&lt;=n; i++)
+  
+  for(int i=1; i<=n; i++)
   {
-     if(rg[ix] == 0) printf(&quot;%d\n&quot;, i);
-     else if(rg[ix] == 3) printf(&quot;Fizz\n&quot;);
-     else if(rg[ix] == 5) printf(&quot;Buzz\n&quot;);
-     else if(rg[ix] == 15) printf(&quot;FizzBuzz\n&quot;);
+     if(rg[ix] == 0) printf("%d\n", i);
+     else if(rg[ix] == 3) printf("Fizz\n");
+     else if(rg[ix] == 5) printf("Buzz\n");
+     else if(rg[ix] == 15) printf("FizzBuzz\n");
      
      ix++;
      if(ix==15) ix = 0;
   }
-}</pre></div>
-</div>
+}
+{% endraw %}{% endhighlight %}
 
-<p>There is a part of my brain that clings to the idea that the ALU is always the bottleneck. Though I know this isn't true, it's still nice to experiment with constraining myself on simple problems such as FizzBuzz, especially when I can find an elegant solution underneath.</p>
+<p>There is a part of my brain that clings to the idea that the ALU is always the bottleneck.
+Though I know this isn't true, it's still nice to experiment with
+constraining myself on simple problems such as FizzBuzz,
+especially when I can find an elegant solution underneath.</p>

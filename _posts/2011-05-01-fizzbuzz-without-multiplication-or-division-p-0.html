@@ -9,74 +9,74 @@ post_time: May  1 2011,  7:37 PM
 </em></p>
 <p>FizzBuzz is a good problem for interviews because it allows you an adaptive scale of interesting things to ask. If the candidate struggles to get the most basic solution working, you can spend the whole hour working with them on improving their solution, and let them leave with a good feeling about your company. If the candidate is <a href="http://blog.bitquabit.com/2011/04/14/finding-literate-programmers/" title="Finding Literate Programmers">a super-literate programmer</a>, you get to explore issues such as testing, readability, and maintainability. This is one possible exploration of maintainability.</p>
 <p>Suppose that, instead of the specific game of FizzBuzz, we want to write a program that can play any variant of the FizzBuzz problem, for which FizzBuzz is one specific instance.</p>
-<div class="CodeRay">
-  <div class="code"><pre>PeriodicReplacement ConstructFizzBuzz() {
-  char* words[2] = {&quot;Fizz&quot;, &quot;Buzz&quot;};
+
+{% highlight c %}{% raw %}
+PeriodicReplacement ConstructFizzBuzz() {
+  char* words[2] = {"Fizz", "Buzz"};
   int replaces[2] = {3, 5};
   return CreatePeriodicReplacement(2, words, replaces);
 }
-
+  
 void FizzBuzz(int n) {
   // `static` - only need to initialize 1x
   static PeriodicReplacement fizzbuzz = ConstructFizzBuzz();
   
   ExecutePeriodicReplacement(fizzbuzz, n);
-}</pre></div>
-</div>
+}
+{% endraw %}{% endhighlight %}
 
 <p>To do this, we need to define three things: the type PeriodicReplacement, and the two functions used to create and execute periodic replacements. The type itself is simply to abstract away the difficulty of C array management.</p>
-<div class="CodeRay">
-  <div class="code"><pre>typedef struct {
+{% highlight c %}{% raw %}
+typedef struct {
   int Length;
   char* Format[];
-} PeriodicReplacement;</pre></div>
-</div>
+} PeriodicReplacement;
+{% endraw %}{% endhighlight %}
 
 <p>ExecutePeriodicReplacement is simply the code from Part 2 modified slightly to use our PeriodicReplacement type instead of a local array and magic number 15.</p>
-<div class="CodeRay">
-  <div class="code"><pre>void ExecutePeriodicReplacement(PeriodicReplacement orders, int n) {
+{% highlight c %}{% raw %}
+void ExecutePeriodicReplacement(PeriodicReplacement orders, int n) {
   int ix = 1;
-
-  for(int i=1; i&lt;=n; i++)
+  
+  for(int i=1; i<=n; i++)
   {
      printf(orders.Format[ix], i);
      
      ix++;
      if(ix == orders.Length) ix = 0;
   }
-}</pre></div>
-</div>
-
+}
+{% endraw %}{% endhighlight %}
 <p>The meat of the problem is in the CreatePeriodicReplacement function. It is passed any divisors and their replacements, along with the count, and does all the precomputation necessary to create an array like `rg` in Part 2. In order to reduce the number of reallocations, the shortest possible PeriodicReplacement.Length will be calculated as the least common multiple of the divisors.</p>
-<div class="CodeRay">
-  <div class="code"><pre>int LeastCommonMultiple(int c, int r[]) {
+{% highlight c %}{% raw %}
+int LeastCommonMultiple(int c, int r[]) {
   int* counters = calloc(c, sizeof(int));
-  for(int i=0;i&lt;c; i++) counters[i] = r[i] - 1;
+  for(int i=0;i<c; i++) counters[i] = r[i] - 1;
   int lcm = 0;
   int zeros = 0;
-  while(zeros &lt; c) {
+  while(zeros < c) {
     zeros = 0;
     lcm++;
-    for(int i=0;i&lt;c; i++) {
+    for(int i=0;i<c; i++) {
       if(counters[i] == 0) { counters[i] = r[i] - 1; zeros++; }
       else counters[i]--;
     }
   }
-
+  
   free(counters);
   return lcm;
 }
-
+  
 PeriodicReplacement CreatePeriodicReplacement(int c, char* words[], int replaces[]) {
   PeriodicReplacement rval;
   rval.Length = LeastCommonMultiple(c, replaces);
   rval.Format = calloc(rval.Length, sizeof(char*));
   int* counts = calloc(c, sizeof(int));
-
-  for(int i=0; i &lt; rval.Length; i++) {
+  
+  for(int i=0; i < rval.Length; i++) {
     bool set = false;
-
-    for(int r=0; r &lt; c; r++) {
+    
+    for(int r=0; r < c; r++) {
       if(counts[r] == 0) { 
         StrConcat(rval.Format, words[r]);
         counts[r] = replaces[r] - 1;
@@ -85,14 +85,14 @@ PeriodicReplacement CreatePeriodicReplacement(int c, char* words[], int replaces
         counts[r]--;
       }
     }
-
-    if(!set) rval.Format = &quot;%d&quot;;
-    rval.Format = StrConcat(rval.Format, &quot;\n&quot;);
+    
+    if(!set) rval.Format = "%d";
+    rval.Format = StrConcat(rval.Format, "\n");
   }
-
+  
   free(counts);
   return rval;
-}</pre></div>
-</div>
+}
+{% endraw %}{% endhighlight %}
 
-<p>This approach has the nice quality that precomputation can be saved in a static variable for future iterations, if necessary. I've ignored cleanup code and elided over StrConcat, as they distract from the core of the problem.</p>
+<p>This approach has the nice quality that precomputation can be saved in a static variable for future iterations, if necessary. I've ignored cleanup code and elided over <code>StrConcat</code>, as they distract from the core of the problem.</p>

@@ -3,34 +3,35 @@ layout: post
 title: FizzBuzz without multiplication or division, part 2
 post_time: April 18 2011,  8:50 PM
 ---
-<p><span style="font-size: 12px;">
+<p>
     <p><em>This is the second of a three-part series:
         <a href="{% post_url 2011-04-17-fizzbuzz-without-multiplication-or-division %}">Part 1</a>,
         <a href="{% post_url 2011-05-01-fizzbuzz-without-multiplication-or-division-p-0 %}">Part 3</a>.</em></p>
 </span></p>
 <p><a href="{% post_url 2011-04-17-fizzbuzz-without-multiplication-or-division %}">Last time</a> on Lost In Permutation, I wrote a <a href="http://www.codinghorror.com/blog/2007/02/fizzbuzz-the-programmers-stairway-to-heaven.html" title="FizzBuzz: the Programmer's Stairway to Heaven">FizzBuzz</a> implementation that didn't use the run-time multiplication and division operators. Unfortunately, magic numbers make me squeamish, and there is too much coupling between the data in <code>rg</code> and the if-chain. In order to change the behavior of the function, I would have to change both places.</p>
 <p>To fix this, I can use <code>printf()</code> (which doesn't care if I pass an extra parameter) as the dispatcher. The more decisions I can foist onto the runtime, the less code I have written, which is great because it means I have less code to test, less code to read, and less code to maintain.</p>
-<div class="CodeRay">
-  <div class="code"><pre>void FizzBuzz(int n) {
-  char* num = &quot;%d\n&quot;;
-  char* fizz = &quot;Fizz\n&quot;;
-  char* buzz = &quot;Buzz\n&quot;;
-  char* fizzbuzz = &quot;FizzBuzz\n&quot;;
 
+{% highlight c%}{% raw %}
+void FizzBuzz(int n) {
+  char* num = "%d\n";
+  char* fizz = "Fizz\n";
+  char* buzz = "Buzz\n";
+  char* fizzbuzz = "FizzBuzz\n";
+  
   char* rg[15] = { fizzbuzz, num, num, fizz, num, buzz, fizz, num, num, fizz, buzz, num, fizz, num, num };
   int ix = 1;
-
-  for(int i=1; i&lt;=n; i++)
+  
+  for(int i=1; i<=n; i++)
   {
      printf(rg[ix], i);
      
      ix++;
      if(ix==15) ix = 0;
   }
-}</pre></div>
-</div>
+}
+{% endraw %}{% endhighlight %}
 
-<blockquote class="posterous_short_quote">
+<blockquote>
 <p>Perfection is achieved, not when there is nothing more to add, but when there is nothing left to take away.</p>
 <p>- Antoine de Saint-Exup&eacute;ry</p>
 </blockquote>
