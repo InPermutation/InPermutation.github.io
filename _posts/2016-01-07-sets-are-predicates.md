@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Predicates are sets"
-date: "Sun, 03 Jan 2016 22:30:00-0500"
+date: "Thu, 03 Jan 2016 23:11:00-0500"
 ---
 A **predicate** is a function that takes a value and computes a `true` or `false` response.
 
@@ -9,6 +9,8 @@ This type can be expressed easily in .NET. In C#, the
 [`Predicate<T>` Delegate](https://msdn.microsoft.com/en-us/library/bfcke1bz%28v=vs.110%29.aspx)
 is declared as
 {% highlight csharp %}public delegate bool Predicate<in T>(T obj){% endhighlight %}
+
+----
 
 A **set** is an abstract data type that stores values, in no particular order, without repetitions.
 
@@ -18,7 +20,9 @@ A **set** is an abstract data type that stores values, in no particular order, w
 * [`System.Collections.Immutable.IImmutableSet<T>`](https://msdn.microsoft.com/en-us/library/dn467169%28v=vs.111%29.aspx), a generic immutable finite set
 * [`Microsoft.SqlServer.Management.Sdk.Sfc.IReadonlySet`](https://msdn.microsoft.com/en-us/library/microsoft.sqlserver.management.sdk.sfc.ireadonlyset.aspx), an immutable non-generic finite set, for some reason in the `Microsoft.SqlServer` namespace.
 
-All of these types have a `Contains` method, which can be stored as a `Predicate<T>`. This means that any of the set types in .NET can be used as predicates. Intuitively, this predicate answers the question "does `this` set contain the argument?"
+All of these types have a `Contains` method, which can be cast to `Predicate<T>`. This means that **any of the set types in .NET can be used as predicates!** Intuitively, this predicate answers the question "does `this` set contain the argument?"
+
+----
 
 Is the converse also true? Can we create a set from predicates? Let's declare a `PredicateSet` in C# 6:
 
@@ -40,7 +44,7 @@ public partial class PredicateSet<T> {
 namespace Test {
     [TestClass]
     public partial class PredicateSetTest {
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethod]
+        [TestMethod]
         public void ItemTest() {
             var ps = new PredicateSet<int>(i => i == 2);
             Assert.IsFalse(ps.Contains(0));
@@ -70,7 +74,8 @@ namespace Test {
         }
 
         private static readonly Random Random = new Random();
-        /// It takes too long to run our tests on all the integers, so let's just try some random ones
+        /// It takes too long to run our tests on all the integers,
+        /// so let's just try some random ones
         private static IEnumerable<int> SomeIntegers() {
             yield return int.MinValue;
             yield return int.MinValue + 1;
@@ -89,8 +94,8 @@ namespace Test {
             var empty = new PredicateSet<int>(i => false);
             var universal = new PredicateSet<int>(i => true);
             foreach (var i in SomeIntegers()) {
-                Assert.IsTrue(universal.Contains(i), "i={0}", i);
-                Assert.IsFalse(empty.Contains(i), "i={0}", i);
+                Assert.IsTrue(universal.Contains(i));
+                Assert.IsFalse(empty.Contains(i));
             }
         }
     }
@@ -102,12 +107,16 @@ It's a neat trick. Can we add set algebra?
 {% highlight csharp %}{% raw %}
 public partial class PredicateSet<T> {
     public PredicateSet<T> Union(PredicateSet<T> other) =>
-        new PredicateSet<T>(v => this.indicator(v) || other.indicator(v));
+        new PredicateSet<T>(
+            v => this.indicator(v) || other.indicator(v));
 
     public PredicateSet<T> Intersection(PredicateSet<T> other) =>
-        new PredicateSet<T>(v => this.indicator(v) && other.indicator(v));
+        new PredicateSet<T>(
+            v => this.indicator(v) && other.indicator(v));
 
-    public PredicateSet<T> Complement() => new PredicateSet<T>(v => !this.indicator(v));
+    public PredicateSet<T> Complement() =>
+        new PredicateSet<T>(
+            v => !this.indicator(v));
 }
 namespace Test {
     partial class PredicateSetTest {
@@ -137,8 +146,8 @@ namespace Test {
             foreach (var u in new[] { i1, i2 }) {
                 foreach (var i in SomeIntegers()) {
                     bool shouldContain = (i == 7);
-                    Assert.AreEqual(shouldContain, i1.Contains(i), "i={0}", i);
-                    Assert.AreEqual(shouldContain, i2.Contains(i), "i={0}", i);
+                    Assert.AreEqual(shouldContain, i1.Contains(i));
+                    Assert.AreEqual(shouldContain, i2.Contains(i));
                 }
             }
         }
@@ -157,10 +166,12 @@ namespace Test {
 
 Well, that's a very powerful way to define sets. Why isn't it used more?
 
-Unfortunately, you can't implement any of the existing interfaces for sets. They all want to be `IEnumerable<T>`. There's no way for a `PredicateSet` to be able to generate all of the elements that are contained in it, or even count them.
+Unfortunately, `PredicateSet` can't implement any of the existing interfaces for sets. They all want to be `IEnumerable<T>`. There's no way for a `PredicateSet` to be able to generate all of the elements that are contained in it, or even count them.
 
 {% highlight csharp %}{% raw %}
-var allUppercaseStrings = new PredicateSet<string>(s => s.ToUpper() == s);
+Predicate<string> isUpper = s => s.ToUpper() == s;
+var allUppercaseStrings = new PredicateSet<string>(isUpper);
+
 allUppercaseStrings.Count(); // ???
 for (string s in allUppercaseStrings) {
     // ???
@@ -169,12 +180,12 @@ for (string s in allUppercaseStrings) {
 
 Similarly, set relations like `Subset`, `Superset`, and `Equals` are impossible to calculate.
 
-Here's the total source code for the `PredicateSet` class:
+Here's the entire combined source listing for the `PredicateSet` class:
 
 PredicateSet.cs
 ===============
 
-{% highlight chsarp %}{% raw %}
+{% highlight csharp %}{% raw %}
 using System;
 
 public partial class PredicateSet<T> {
@@ -185,11 +196,17 @@ public partial class PredicateSet<T> {
 
     public bool Contains(T item) => indicator(item);
     public PredicateSet<T> Union(PredicateSet<T> other) =>
-        new PredicateSet<T>(v => this.indicator(v) || other.indicator(v));
+        new PredicateSet<T>(
+            v => this.indicator(v) || other.indicator(v));
 
     public PredicateSet<T> Intersection(PredicateSet<T> other) =>
-        new PredicateSet<T>(v => this.indicator(v) && other.indicator(v));
+        new PredicateSet<T>(
+            v => this.indicator(v) && other.indicator(v));
 
-    public PredicateSet<T> Complement() => new PredicateSet<T>(v => !this.indicator(v));
+    public PredicateSet<T> Complement() =>
+        new PredicateSet<T>(
+            v => !this.indicator(v));
 }
 {% endraw %}{% endhighlight %}
+
+Isn't that interesting? Set algebra and Boolean algebra seem to be incredibly closely related.
