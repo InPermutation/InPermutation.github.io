@@ -8,6 +8,6 @@ twitter: InPermutation
 github: InPermutation
 linkedin: permutation
 stackoverflow: 3140/jacob-krall
-highlighter: pygments
+highlighter: rouge
 url: http://jacob.jkrall.net
 encoding: utf-8
