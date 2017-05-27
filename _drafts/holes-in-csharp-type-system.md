@@ -1,7 +1,8 @@
 ---
+layout: post
 title: Holes in the C# type system
 ---
-```cs
+{% highlight cs %}
 class Thing {
     public Thing(object o) { }
 }
@@ -10,10 +11,11 @@ static class Program {
     public static void Main(string[] args) {
         var lazy = new Lazy<Thing>();
     }
-}```
+}{% endhighlight %}
+
 crashes at runtime.
 
-```cs
+{% highlight cs %}
 static class Program2  {
     static Lazy<T> DefaultLazy<T>() where T : new() {
         return new Lazy<T>();
@@ -22,7 +24,8 @@ static class Program2  {
     public static void Main(string[] args) {
         var lazy = DefaultLazy<Thing>();
     }
-}```
+}{% endhighlight %}
+
 doesn't compile.
 
 
