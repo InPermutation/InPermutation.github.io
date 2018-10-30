@@ -1,0 +1,88 @@
+---
+layout: post
+title: Killing Off Wasabi - Part 2
+post_time: July 16 2015, 07:36 AM
+---
+Last time, I talked about our motivations for creating Wasabi, maintaining it for almost a decade, and finally <a href="/killing-off-wasabi-part-1">killing it off</a>. Today I would like to talk about the new piece of software that enabled the final phase, Roslyn. <a href="https://github.com/dotnet/roslyn" target="_blank" rel="noopener">Roslyn</a> is Microsoft's open source compiler platform for .NET. Roslyn includes a full implementation of both the C# and the Visual Basic.NET compiler.
+
+I am also <a href="https://github.com/FogCreek/RoslynGenerator" target="_blank" rel="noopener">releasing Wasabi's new code generator</a> as open source software. I believe this is the first real-world transpiler targeting C# with Roslyn to be open sourced. It is my hope that this article and associated source code will serve as a rough guidepost for anyone who wants to write a .NET code generator using Roslyn.
+<h3>The Previous Generator</h3>
+When Wasabi 3.0 was first created, Fog Creek specified .NET as the new backend target. There are two common ways to generate a .NET assembly.
+
+The first approach to .NET is to create a backend that generates Common Intermediate Language (Formerly known as the MSIL), the bytecode format for the .NET virtual machine. The advantage of creating a CIL backend is that compilation only has one step: from Wasabi directly into the final DLL shipped to customers. There are a few disadvantages, however. First, CIL is a binary format, so it requires special tools to be able to read it. Second, we wanted to be assured that the output of Wasabi was valid .NET, which would give us hope that the output was not corrupted in some weird way. Finally, there is the simple conceptual difference between Wasabi, the high-level language, and CIL, the virtual assembly language.
+
+The second option was to write a transpiler. We preferred this option over generating raw CIL because we already had experience writing transpilers. Wasabi (née Thistle) started as a transpiler to PHP, then added VBScript and JavaScript transpilers with Wasabi 2.0. One downside is that a transpiler to a compiled language adds another full compilation phase on top of the resources used to compile your own language. But we would benefit from the additional verification provided by those phases: FogBugz would have to survive type checking in two different languages, and we trusted <i>csc.exe</i> to generate correct bytecode for us. Also, we were able to emit <i>#line</i> pragmas to be able to step through Wasabi code using the Visual Studio debugger. The transpiler also made XML documentation comments very easy to generate. We decided on C# as our target language, because Wasabi is written in C#, and semicolons are cool.
+
+Once we had decided on transpilation, the next step was choosing a generation method. Once again, there were two options available to us. The first was to hand-roll the code generator, passing bare strings to <i>TextWriter.Write</i>. Our previous three backends used this method, so we were already quite comfortable with it. The second option, which we ended up using, was to use a code generation library like Microsoft <a href="https://msdn.microsoft.com/en-us/library/y2k85ax6%28v=vs.110%29.aspx" target="_blank" rel="noopener">CodeDOM</a>, which represents common source code elements as an object graph, similar to how the browser DOM represents HTML elements. We anticipated that CodeDOM would provide some level of static typing to our code generation process, as our previous generators always included a period of fixing obvious typographical errors (a missing semicolon here, an extra open-bracket there). CodeDOM also exposed a handy method for compiling directly to C#. However, we were slightly disappointed when we discovered that <a href="http://stackoverflow.com/a/29283/3140" target="_blank" rel="noopener">CodeDOM simply writes to disk</a> and shells out to <i>csc.exe</i>. Another irritation was that word "common" I included in my description of CodeDOM: it is a lowest-common-denominator tool. Basically, the output was intended for a compiler, not human consumption. I will show some examples later. But we didn't need humans to be able to modify the generated C# code - it was just important that the C# was there, as <a href="http://www.joelonsoftware.com/articles/fog0000000026.html" target="_blank" rel="noopener">a reassuring option</a> if something went wrong.
+<h3>Roslyn</h3>
+In early December 2014, I visited NYC HQ and chatted with John Daniels about some of the friction Wasabi was causing. Everyone who worked on FogBugz had to know two server languages - Wasabi and C#. New development had shifted into C#, but minor modifications and bug fixing had to be done in the older Wasabi portion of FogBugz. Also, as mentioned earlier, Wasabi had two separate compilation steps, which meant changes took over twice as long as we believed they should.
+
+John told me he had experimented with writing a cleanup tool using Microsoft's new Roslyn library that removed some of the weird cruft from the CodeDOM output. We mused over the possibility of cutting out CodeDOM entirely and using Roslyn for code generation. I was encouraged by him and several FogBugz developers to follow that thought.
+
+On Monday, February 9, I copied the CodeDOM generator file to <i>RoslynGenerator.cs</i>, removed CodeDOM's <i>using</i> statements and started replacing each method with the Roslyn equivalent. After a few days of struggling, the generator compiled but crashed on execution. Debugging and bug fixing continued for a few more days. Once I had any output at all, my next goal was to generate identical source code from the two generators, so I added a command-line flag that let me switch generators and initialized a Mercurial repository to check the diff between the two.
+
+There were two major roadblocks to identical generation. First, there was an impedance mismatch between the two generation libraries' philosophy. CodeDOM's representation is a mutable graph, so I would often pass node references as parameters and mutate them in other methods. Roslyn represents source code as an immutable graph of nodes, so the correct way to generate a given node is from the bottom up. However, because I was trying to modify a copy of the CodeDOM generator into shape, I had to change the calling convention of some of the methods which depended on mutation. There are many convenience methods in Roslyn to allow you to create a mutated copy of your node, but it wasn't always clear where the result should be stored. The symptom of storing it in the wrong place (or forgetting entirely) was that some output was missing. Usually, I succeeded at rewriting the code to be generated in an immutable-friendly order, but I had to create some <i>List</i>s and instance fields where the mutability was difficult to avoid.
+
+The second roadblock was comment generation. Internally, Wasabi represents comments as statements (they inherit from <i>CStatement</i>), as does CodeDOM (which uses <i>CodeComment</i>s wrapped in <i>CodeCommentStatement</i>s). However, Roslyn is designed to be able to represent any valid C# program in a lossless way, so it uses a much more flexible idiom, known as <i>SyntaxTrivia</i>. Both whitespace and comments can be represented this way, but trivia is a property of a node, not a node itself: nodes have collections of leading trivia and trailing trivia. As an example, the expression <i>1 + 2</i> could be represented with either of the following pseudocode trees:
+<pre>(binary-expression
+    operator: +
+    lhs: (constant-expression value: 1)
+    rhs: (constant-expression value: 2)
+    leading-trivia: (trivia-list ' ')
+    trailing-trivia: (trivia-list ' ')
+)
+</pre>
+Or
+<pre>(binary-expression
+    operator: +
+    lhs (constant-expression value: 1 trailing-trivia: (trivia-list ' '))
+    rhs (constant-expression value: 2 leading-trivia: (trivia-list ' '))
+)
+</pre>
+Either way, the result is a single space between the 1 and + and another between the + and 2. Comments are similarly stored as properties on any node, allowing inline comments (<i>/* ... */</i>) and end-of-line comments, or comments on lines of their own.
+
+I really enjoy the idea of syntax trivia. I wish I could go back in time and add a similar feature to Wasabi. However, instead of trying to replicate the exact weirdness of CodeDOM comment generation, I switched comment generation off in both generators for the purposes of correctness checking, then added all comments to the Roslyn generator later.
+
+One complaint I have about Roslyn is with the <i>SyntaxKind</i> type - for performance reasons, it is implemented as a gigantic <i>enum</i>. However, this means it is not type safe - you can pass any <i>SyntaxKind</i> to any method that takes one, even where doing so will cause an inevitable crash. I ended up having to fix dozens of cases where I passed the wrong <i>SyntaxKind</i> (for example, passing a <i>QuestionToken</i> where I meant to pass a <i>ConditionalExpression</i>), and Roslyn would throw an exception. Having a type-safe version of this API available would have been appreciated, even if it was a plain wrapper around an integral <i>enum SyntaxKind</i> under the covers.
+<h3>Idioms and Readability</h3>
+As I discussed before, the whole reason we were switching to Roslyn from CodeDOM is that the quality of the generated code, while it preserved meaning, was not good for human consumption. The first week of March, when the generated code finally matched the output of CodeDOM, was when Roslyn really began to show its value. I took a week off in the middle of the code generator rewrite, so it took about 12 developer-days to reimplement the CodeDOM generator in Roslyn.
+
+Once the reimplementation was done, I pressed hard on the abilities of Roslyn to make the output of Wasabi much more idiomatic:
+<ul>
+ 	<li>Boolean negation uses the <i>!x</i> operator instead of comparing <i>x == false</i></li>
+ 	<li>Similarly, not-equals changed from <i>(a == b) == false</i> to <i>a != b</i></li>
+ 	<li>Negative numbers are represented as <i>-n</i> instead of <i>(0 - n)</i></li>
+ 	<li><i>While</i> loops now use a <i>while(cond)</i> loop, instead of using an initializer-less <i>for( ; cond ; )</i></li>
+ 	<li>Likewise with <i>do { } while(cond);</i> loops</li>
+ 	<li>Classes with no base class no longer explicitly inherit from <i>object</i></li>
+ 	<li><i>else-if</i> clauses no longer have to be generated as <i>else { if }</i>, reducing the dreaded <a href="http://c2.com/cgi/wiki?ArrowAntiPattern" target="_blank" rel="noopener">Arrow Anti Pattern</a></li>
+ 	<li><i>switch</i> statements also no longer have to be generated as a nested chain of <i>if, else-if, else-if, else-if, else...</i></li>
+ 	<li>Lambdas use C# lambdas instead of Wasabi-generated closure classes. (I had to make sure nobody was depending on the weirdness of Wasabi lambdas. Luckily, nobody was.)</li>
+ 	<li>Removed unnecessary parentheses, e.g. <i>return (x - 1);</i> and <i>if ((s == z)) { }</i></li>
+ 	<li>Correctly translate Wasabi to C# precedence rules. (CodeDOM wrapped every single binary expression in parentheses.)</li>
+ 	<li>Replace Wasabi runtime functions for <i>Xor</i>, <i>Imp</i>, and <i>Eqv</i> with inline equivalents in C#</li>
+ 	<li>Rewrite almost all <i>goto</i>s as the equivalent <i>break</i> or <i>return</i></li>
+ 	<li>Don't generate empty files, namespaces, or <i>partial class Global : GlobalBase { }</i></li>
+ 	<li>Improve string literal generation</li>
+ 	<li>By request, developed a heuristic for "obnoxious parameters" so that functions passed many literal or <i>null</i> parameters have those parameters named</li>
+</ul>
+I also fixed several things that could have been fixed in the previous generator, but were ignored because the readability of the output had not been a concern:
+<ul>
+ 	<li>References to constants are generated instead of outputting the literal value of the constant</li>
+ 	<li>Hexadecimal numbers are output as hexadecimal</li>
+ 	<li><i>for</i> loops with constant bounds no longer generate local variables.</li>
+ 	<li>Wasabi arrays start at index 1. Do this calculation at compile time. For example, write <i>rg(1)</i> as <i>rg[0]</i> Instead of <i>rg[1 - 1]</i>.</li>
+ 	<li>Initialize most fields inline instead of in the constructor</li>
+ 	<li>Reduced the number of unnecessary cast expressions (the majority of the casts generated were being added by a bug in the type checker!)</li>
+ 	<li>Rename the Wasabi thread-static singleton from <i>__Global.__Current</i> to <i>Global.Current</i></li>
+ 	<li>Don't assign <i>null</i> to optional parameters -- that's guaranteed to be the default value.</li>
+ 	<li>The default value for <i>int</i>s is 0, not <i>new int()</i>. Similarly with longs (<i>0L</i>) and Booleans (<i>false</i>).</li>
+ 	<li>Automatically rewrite VBScript-style returns (assigning to the name of the function) as immediate returns</li>
+ 	<li>Removed some ancient profiling code generation</li>
+ 	<li>Got rid of the very few union types</li>
+</ul>
+Thankfully, those bugs were even easier to fix in the new Roslyn generator than they were in the old CodeDOM generator.
+
+On March 27, the FogBugz team and I decided that I was hitting the point of diminishing returns and closed the project. I demonstrated my results to the founders on the 30th, and they asked me to get the developer lead and two most prolific FogBugz contributors to work exclusively in the generated C# branch for a while to see how it felt before merging. Once the developers added their approval, I merged my changes into FogBugz integration in the late evening of April 21, and FogBugz Version 8.13.104 went out to 100% of FogBugz On Demand customers on May 21.
+
+I'm happy to announce that <a href="https://github.com/FogCreek/RoslynGenerator" target="_blank" rel="noopener">Wasabi's Roslyn generator is now available on GitHub</a>. It's certainly not a beautiful piece of code: it only needs to run one time, on one piece of code (FogBugz) that I can modify as needed. But I think it could be useful for anyone who is writing a C# code generator using Roslyn.
