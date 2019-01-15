@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Benford's law"
-date: "Fri, 02 Jan 2018 13:00:00-0500"
+date: "Fri, 02 Nov 2018 13:00:00-0500"
 ---
 <h4>Once upon a time</h4>
 In the long-ago, FogBugz stored binary blobs in the database. This made sense, as the database was where all your data was stored. Taking a full backup of a customer site was easy: just take a backup of the customer's database.
