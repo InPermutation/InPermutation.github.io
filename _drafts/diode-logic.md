@@ -40,6 +40,18 @@ NAND and NOR are both universal gates, which means they can be used to create an
 
 Diodes can create AND and OR gates.
 
+### Aside: semiconductors and vacuum tubes.
+
+* First semiconductor device was the diode, discovered by Ferdinand Braun in 1874.
+* Thermionic emission 1873 Frederick Guthrie  / 1883 Thomas Edison
+* First vacuum tube was also a diode, John Ambrose Fleming, 1904.
+* Triode 1907
+* 1925 Lilienfeld FET???
+* 1939-1940 WWII need for radar amplifiers / Russell Ohl's cat's whisker / found a junction.
+* Shockley and Brattain / surface science / 23 December 1947 
+* John Bardeen, Walter Houser Brattain, and William Bradford Shockley were awarded the 1956 Nobel Prize in physics for their work.
+* Maybe this aside is too much?
+
 Diode-resistor logic ("DRL") - heavily used in the D-17B computer in 1962,
 which was part of the Minuteman I NS-1OQ missile guidance system.
 Transistors were expensive, so DRL reduced the number of transistors used.
