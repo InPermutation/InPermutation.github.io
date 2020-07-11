@@ -3,7 +3,7 @@ permalink: /:title
 title: Lost In Permutation
 author: Jacob Krall
 description: Starting up...
-exclude: ['README.md']
+exclude: ['README.md', 'vendor']
 twitter: InPermutation
 github: InPermutation
 linkedin: permutation
