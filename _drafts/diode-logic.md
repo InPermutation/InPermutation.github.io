@@ -8,11 +8,9 @@ With the release of Factorio 1.0 this week, lots of folks are writing articles a
 is
 [just](https://www.reddit.com/r/factorio/comments/i8wwmp/factorio_is_similar_to_coding/)
 like
-[programming](https://www.reddit.com/r/factorio/comments/hnqchq/if_you_like_factorio_you_should_try_programming/).
+[programming](https://blog.quigley.codes/dev-lessons-learned-from-factorio/).
 
-I started playing Factorio seriously last year.
-Since the beginning of this year, I've been playing with digital electronics.
-Let's combine these two indoor enthusiast hobbies.
+So, to keep things fresh, let's compare it to digital electronics instead.
 
 In Factorio, conveyor belts do not require external power.
 Can this be exploited to create logic gates?
@@ -20,15 +18,15 @@ Is this subset of the game Turing complete?
 
 ## Step 0: Which way are signals flowing?
 
+We can exploit the priority function of splitters to create binary logic gates.
+
 If you're thinking "the stuff on the belt is the signal,"
 the problem is that stuff on belts travels fairly slowly, so you're limited in the speed of the circuit you can create.
 
-But, if you fill up the belts with stuff, and use "jammed" as a 1 and "moving" as a 0, signals can propagate effectively immediately.
 
 ## Step 1: Create gates
 
-We can exploit the splitters to create binary logic gates.
-(This gets briefly confusing, because there are two kinds of inputs and outputs.)
+If you fill up the belts with stuff, and use "jammed" as a 0 and "moving" as a 1, signals can propagate immediately. This gets more confusing, because there are two kinds of inputs and outputs: the "logic" output is moving in the opposite direction of the "material" output. Coincidentally, due to Ben Franklin's "single-fluid model" of electricity, the same thing happens in real circuits: the electrons actually flow in the opposite direction of the logic signals!
 
 A logic gate has two inputs and one output. A Factorio splitter has two inputs and two outputs.
 
