@@ -1,9 +1,9 @@
 ---
 layout: post
 title: Diode logic in Factorio
-date: 2020-08-17T03:32Z
+date: 2020-08-29T01:00Z
 ---
-With the release of Factorio 1.0 this week, lots of folks are writing articles about how 
+With the release of Factorio 1.0 this month, lots of folks are writing articles about how
 [Factorio](https://blog.nindalf.com/posts/factorio-and-software-engineering/)
 is
 [just](https://www.reddit.com/r/factorio/comments/i8wwmp/factorio_is_similar_to_coding/)
@@ -16,15 +16,11 @@ In Factorio, conveyor belts do not require external power.
 Can this be exploited to create logic gates?
 Is this subset of the game Turing complete?
 
-## Step 0: Which way are signals flowing?
-
 We can exploit the priority function of splitters to create binary logic gates.
 
 If you're thinking "the stuff on the belt is the signal,"
-the problem is that stuff on belts travels fairly slowly, so you're limited in the speed of the circuit you can create.
-
-
-## Step 1: Create gates
+there's one problem: stuff on belts travels fairly slowly,
+so you're limited in the speed of the circuit you can create.
 
 If you fill up the belts with stuff, and use "jammed" as a 0 and "moving" as a 1, signals can propagate immediately. This gets more confusing, because there are two kinds of inputs and outputs: the "logic" output is moving in the opposite direction of the "material" output. Coincidentally, due to Ben Franklin's "single-fluid model" of electricity, the same thing happens in real circuits: the electrons actually flow in the opposite direction of the logic signals!
 
@@ -37,6 +33,26 @@ OR is simple: the outputs are normal, the second input is always-on, and the pri
 AND is also simple: the outputs are normal, the second input is always-on and the prioritized input.
 Only if both outputs are moving does the signal input move.
 
+### 00
+<video width=480 height=300 autoplay loop muted playsinline>
+   <source src="image/2020/diode-logic/Factorio GIF-00.mp4" type="video/mp4">
+</video>
+
+### 01
+<video width=480 height=300 autoplay loop muted playsinline>
+   <source src="image/2020/diode-logic/Factorio GIF-01.mp4" type="video/mp4">
+</video>
+
+### 10
+<video width=480 height=300 autoplay loop muted playsinline>
+   <source src="image/2020/diode-logic/Factorio GIF-10.mp4" type="video/mp4">
+</video>
+
+### 11
+<video width=480 height=300 autoplay loop muted playsinline>
+   <source src="image/2020/diode-logic/Factorio GIF-11.mp4" type="video/mp4">
+</video>
+
 But... can we do anything else? It seems like splitters can't make any other logical signals.
 
 ## Step 2: Invert it
@@ -48,7 +64,24 @@ figured it out in the XIXth century: the duality principle.
 
 Let's assume our input signals can have their inverse provided.
 Then, following De Morgan's laws, we can also find the complements of the outputs.
-Negation is as simple as switching the belts' positions. With that, we can construct a NAND or a NOR.
+Negation is as simple as switching the belts' positions.
+
+### Input-dual AND
+<video width=480 height=300 autoplay loop muted playsinline>
+   <source src="image/2020/diode-logic/AND2.mp4" type="video/mp4">
+</video>
+
+### Input-dual OR
+<video width=480 height=300 autoplay loop muted playsinline>
+   <source src="image/2020/diode-logic/OR2.mp4" type="video/mp4">
+</video>
+
+### Input-dual NOT
+<video width=480 height=300 autoplay loop muted playsinline>
+   <source src="image/2020/diode-logic/NOT2.mp4" type="video/mp4">
+</video>
+
+With that, we can construct a NAND or a NOR.
 NAND and NOR are both universal gates, which means they can be used to create any other Boolean circuit.
 
 ## Step 3: Practical applications??
@@ -56,7 +89,7 @@ NAND and NOR are both universal gates, which means they can be used to create an
 If diodes can create AND and OR gates, can we use them to build a computer?
 
 Sure - Mike Sutton shows
-[how diode logic works on a breadboard](http://bread80.com/2019/09/13/breadboarding-with-diode-logic/).
+[how diode logic works on a breadboard](https://bread80.com/2019/09/13/breadboarding-with-diode-logic/).
 
 This kind of [diode-resistor logic](https://en.wikipedia.org/wiki/Diode_logic)
 ("DRL") was heavily used in the 
