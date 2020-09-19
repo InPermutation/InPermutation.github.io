@@ -22,6 +22,11 @@
     LinkedIn
 </a>
 {% endif %}
+{% if site.youtube %}
+<a href="https://youtube.com/user/{{ site.youtube }}" class="youtube" title="{{ site.author }} on YouTube">
+    YouTube
+</a>
+{% endif %}
 {% if page.next %}
     <a href="{{ page.next.url }}" class="next" title="Next post">Next</a>
 {% endif %}
